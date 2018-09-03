@@ -1,9 +1,9 @@
 ﻿{
 
-  "podName" : "CloudmersiveVoiceRecognitionApiClient",
+  "podName" : "CloudmersiveImageRecognitionApiClient",
   "classPrefix" : "CM",
   "podVersion" : "1.1.2",
   "authorName" : "Cloudmersive",
   "authorEmail" : "support@cloudmersive.com",
-  "gitRepoURL" : "https://github.com/Cloudmersive/Cloudmersive.APIClient.ObjectiveC.VoiceRecognition"
+  "gitRepoURL" : "https://github.com/Cloudmersive/Cloudmersive.APIClient.ObjectiveC.ImageRecognition"
 }  

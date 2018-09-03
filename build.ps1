@@ -1,0 +1,4 @@
+﻿Remove-Item –path ./client –recurse
+& java -jar swagger-codegen-cli.jar generate -i https://api.cloudmersive.com/swagger/api/barcode -l objc -o client -c packageconfig.json
+(Get-Content ./client/CloudmersiveVoiceRecognitionApiClient.podspec).replace('CloudmersiveVoiceRecognitionApiClient/**/*.{m,h}', "client/CloudmersiveVoiceRecognitionApiClient/**/*.{m,h}") | Set-Content ./client/CloudmersiveVoiceRecognitionApiClient.podspec
+(Get-Content ./client/CloudmersiveVoiceRecognitionApiClient.podspec).replace('CloudmersiveVoiceRecognitionApiClient/**/*.h', "client/CloudmersiveVoiceRecognitionApiClient/**/*.h") | Set-Content ./client/CloudmersiveVoiceRecognitionApiClient.podspec

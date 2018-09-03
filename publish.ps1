@@ -1,0 +1,1 @@
+& pod trunk push ./client/CloudmersiveVoiceRecognitionApiClient.podspec --allow-warnings

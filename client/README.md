@@ -49,7 +49,12 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMDrawTextInstance.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawTextRequest.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFace.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFaceCompareResponse.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFaceLocateResponse.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFaceLocateWithLandmarksResponse.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFaceMatch.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFacePoint.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFaceWithLandmarks.h>
 #import <CloudmersiveImageRecognitionApiClient/CMImageDescriptionResponse.h>
 #import <CloudmersiveImageRecognitionApiClient/CMNsfwResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMObjectDetectionResult.h>
@@ -113,10 +118,12 @@ Class | Method | HTTP request | Description
 *CMEditApi* | [**editCompositeBasic**](docs/CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
 *CMEditApi* | [**editDrawRectangle**](docs/CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw rectangle onto an image
 *CMEditApi* | [**editDrawText**](docs/CMEditApi.md#editdrawtext) | **POST** /image/edit/draw/text | Draw text onto an image
+*CMFaceApi* | [**faceCompare**](docs/CMFaceApi.md#facecompare) | **POST** /image/face/compare-and-match | Compare and match faces
 *CMFaceApi* | [**faceCropFirst**](docs/CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face (square)
 *CMFaceApi* | [**faceCropFirstRound**](docs/CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face (round)
 *CMFaceApi* | [**faceDetectAge**](docs/CMFaceApi.md#facedetectage) | **POST** /image/face/detect-age | Detect the age of people in an image
 *CMFaceApi* | [**faceLocate**](docs/CMFaceApi.md#facelocate) | **POST** /image/face/locate | Find faces in an image
+*CMFaceApi* | [**faceLocateWithLandmarks**](docs/CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
 *CMNsfwApi* | [**nsfwClassify**](docs/CMNsfwApi.md#nsfwclassify) | **POST** /image/nsfw/classify | Not safe for work (NSFW) racy content classification
 *CMRecognizeApi* | [**recognizeDescribe**](docs/CMRecognizeApi.md#recognizedescribe) | **POST** /image/recognize/describe | Describe an image in natural language
 *CMRecognizeApi* | [**recognizeDetectAndUnskewDocument**](docs/CMRecognizeApi.md#recognizedetectandunskewdocument) | **POST** /image/recognize/detect-document/unskew | Detect and unskew a photo of a document
@@ -136,7 +143,12 @@ Class | Method | HTTP request | Description
  - [CMDrawTextInstance](docs/CMDrawTextInstance.md)
  - [CMDrawTextRequest](docs/CMDrawTextRequest.md)
  - [CMFace](docs/CMFace.md)
+ - [CMFaceCompareResponse](docs/CMFaceCompareResponse.md)
  - [CMFaceLocateResponse](docs/CMFaceLocateResponse.md)
+ - [CMFaceLocateWithLandmarksResponse](docs/CMFaceLocateWithLandmarksResponse.md)
+ - [CMFaceMatch](docs/CMFaceMatch.md)
+ - [CMFacePoint](docs/CMFacePoint.md)
+ - [CMFaceWithLandmarks](docs/CMFaceWithLandmarks.md)
  - [CMImageDescriptionResponse](docs/CMImageDescriptionResponse.md)
  - [CMNsfwResult](docs/CMNsfwResult.md)
  - [CMObjectDetectionResult](docs/CMObjectDetectionResult.md)

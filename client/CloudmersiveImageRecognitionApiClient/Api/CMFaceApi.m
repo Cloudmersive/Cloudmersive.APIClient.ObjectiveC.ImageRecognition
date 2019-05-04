@@ -2,7 +2,9 @@
 #import "CMQueryParamCollection.h"
 #import "CMApiClient.h"
 #import "CMAgeDetectionResult.h"
+#import "CMFaceCompareResponse.h"
 #import "CMFaceLocateResponse.h"
+#import "CMFaceLocateWithLandmarksResponse.h"
 
 
 @interface CMFaceApi ()
@@ -49,6 +51,87 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 }
 
 #pragma mark - Api Methods
+
+///
+/// Compare and match faces
+/// Find the faces in an input image, and compare against a reference image to determine if there is a match against the face in the reference image.  The reference image (second parameter) should contain exactly one face.
+///  @param inputImage Image file to perform the operation on; this image can contain one or more faces which will be matched against face provided in the second image.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @param matchFace Image of a single face to compare and match against. 
+///
+///  @returns CMFaceCompareResponse*
+///
+-(NSURLSessionTask*) faceCompareWithInputImage: (NSURL*) inputImage
+    matchFace: (NSURL*) matchFace
+    completionHandler: (void (^)(CMFaceCompareResponse* output, NSError* error)) handler {
+    // verify the required parameter 'inputImage' is set
+    if (inputImage == nil) {
+        NSParameterAssert(inputImage);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"inputImage"] };
+            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'matchFace' is set
+    if (matchFace == nil) {
+        NSParameterAssert(matchFace);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"matchFace"] };
+            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/compare-and-match"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"inputImage"] = inputImage;
+    localVarFiles[@"matchFace"] = matchFace;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"CMFaceCompareResponse*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((CMFaceCompareResponse*)data, error);
+                                }
+                            }];
+}
 
 ///
 /// Crop image to face (square)
@@ -310,6 +393,72 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
                                     handler((CMFaceLocateResponse*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
+/// Locate the positions of all faces in an image, along with the eyes, eye brows, nose and mouth components of each
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @returns CMFaceLocateWithLandmarksResponse*
+///
+-(NSURLSessionTask*) faceLocateWithLandmarksWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMFaceLocateWithLandmarksResponse* output, NSError* error)) handler {
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/locate-with-landmarks"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"CMFaceLocateWithLandmarksResponse*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((CMFaceLocateWithLandmarksResponse*)data, error);
                                 }
                             }];
 }

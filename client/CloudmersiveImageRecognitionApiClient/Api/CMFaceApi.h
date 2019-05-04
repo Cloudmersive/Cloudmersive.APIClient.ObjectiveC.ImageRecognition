@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "CMAgeDetectionResult.h"
+#import "CMFaceCompareResponse.h"
 #import "CMFaceLocateResponse.h"
+#import "CMFaceLocateWithLandmarksResponse.h"
 #import "CMApi.h"
 
 /**
@@ -23,6 +25,20 @@ extern NSString* kCMFaceApiErrorDomain;
 extern NSInteger kCMFaceApiMissingParamErrorCode;
 
 -(instancetype) initWithApiClient:(CMApiClient *)apiClient NS_DESIGNATED_INITIALIZER;
+
+/// Compare and match faces
+/// Find the faces in an input image, and compare against a reference image to determine if there is a match against the face in the reference image.  The reference image (second parameter) should contain exactly one face.
+///
+/// @param inputImage Image file to perform the operation on; this image can contain one or more faces which will be matched against face provided in the second image.  Common file formats such as PNG, JPEG are supported.
+/// @param matchFace Image of a single face to compare and match against.
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMFaceCompareResponse*
+-(NSURLSessionTask*) faceCompareWithInputImage: (NSURL*) inputImage
+    matchFace: (NSURL*) matchFace
+    completionHandler: (void (^)(CMFaceCompareResponse* output, NSError* error)) handler;
+
 
 /// Crop image to face (square)
 /// Crop an image to the face (rectangular crop).  If there is more than one face present, choose the first one.
@@ -70,6 +86,18 @@ extern NSInteger kCMFaceApiMissingParamErrorCode;
 /// @return CMFaceLocateResponse*
 -(NSURLSessionTask*) faceLocateWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(CMFaceLocateResponse* output, NSError* error)) handler;
+
+
+/// Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
+/// Locate the positions of all faces in an image, along with the eyes, eye brows, nose and mouth components of each
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMFaceLocateWithLandmarksResponse*
+-(NSURLSessionTask*) faceLocateWithLandmarksWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMFaceLocateWithLandmarksResponse* output, NSError* error)) handler;
 
 
 

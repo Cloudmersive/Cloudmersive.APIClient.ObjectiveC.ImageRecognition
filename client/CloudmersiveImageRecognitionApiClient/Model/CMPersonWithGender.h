@@ -20,21 +20,19 @@
 
 
 
-@protocol CMPersonWithAge
+@protocol CMPersonWithGender
 @end
 
-@interface CMPersonWithAge : CMObject
+@interface CMPersonWithGender : CMObject
 
 /* Location and other information about the person's face corresponding to this age classification [optional]
  */
 @property(nonatomic) CMFace* faceLocation;
-/* Confidence level of age classification; possible values are between 0.0 and 1.0; higher is better, with values &gt; 0.50 being high confidence results [optional]
+/* Confidence level of gender classification; possible values are between 0.0 and 1.0; higher is better, with values &gt; 0.50 being high confidence results [optional]
  */
-@property(nonatomic) NSNumber* ageClassificationConfidence;
-/* The person's age range classification result in years; possible values are \"0-2\", \"4-6\", \"8-13\", \"15-20\", \"25-32\", \"38-43\", \"48-53\", \"60+\" [optional]
+@property(nonatomic) NSNumber* genderClassificationConfidence;
+/* The person's identified gender; possible values are \"Male\", \"Female\" and \"Unknown\" [optional]
  */
-@property(nonatomic) NSString* ageClass;
-
-@property(nonatomic) NSNumber* age;
+@property(nonatomic) NSString* genderClass;
 
 @end

@@ -4,17 +4,78 @@ All URIs are relative to *https://api.cloudmersive.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**editAutoOrient**](CMEditApi.md#editautoorient) | **POST** /image/edit/auto-orient/remove-exif | Normalizes image rotation and removes EXIF rotation data
 [**editCompositeBasic**](CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
-[**editDrawRectangle**](CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw rectangle onto an image
+[**editContrastAdaptive**](CMEditApi.md#editcontrastadaptive) | **POST** /image/edit/contrast/{gamma}/adaptive | Adaptively adjust the contrast of the image to be more appealing and easy to see
+[**editDrawPolygon**](CMEditApi.md#editdrawpolygon) | **POST** /image/edit/draw/polygon | Draw a polygon onto an image
+[**editDrawRectangle**](CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw a rectangle onto an image
 [**editDrawText**](CMEditApi.md#editdrawtext) | **POST** /image/edit/draw/text | Draw text onto an image
+[**editRotate**](CMEditApi.md#editrotate) | **POST** /image/edit/rotate/{degrees}/angle | Rotate an image any number of degrees
 
+
+# **editAutoOrient**
+```objc
+-(NSURLSessionTask*) editAutoOrientWithImageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Normalizes image rotation and removes EXIF rotation data
+
+Automatically orients the input image based on EXIF information and then removes the EXIF information.  EXIF is an additional set of information stored in some images taken with cell phone cameras based on the orientation of the camera.  By normalizing rotation and removing EXIF data these images become much easier to process.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Normalizes image rotation and removes EXIF rotation data
+[apiInstance editAutoOrientWithImageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editAutoOrient: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **editCompositeBasic**
 ```objc
 -(NSURLSessionTask*) editCompositeBasicWithLocation: (NSString*) location
     baseImage: (NSURL*) baseImage
     layeredImage: (NSURL*) layeredImage
-        completionHandler: (void (^)(NSObject* output, NSError* error)) handler;
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
 Composite two images together
@@ -41,7 +102,7 @@ CMEditApi*apiInstance = [[CMEditApi alloc] init];
 [apiInstance editCompositeBasicWithLocation:location
               baseImage:baseImage
               layeredImage:layeredImage
-          completionHandler: ^(NSObject* output, NSError* error) {
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
@@ -61,7 +122,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**NSObject***
+**NSData***
 
 ### Authorization
 
@@ -74,13 +135,131 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **editContrastAdaptive**
+```objc
+-(NSURLSessionTask*) editContrastAdaptiveWithGamma: (NSNumber*) gamma
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Adaptively adjust the contrast of the image to be more appealing and easy to see
+
+Uses Gamma to adjust the contrast adaptively the way the human eye sees the world.  Results significantly improve the viewability and visual appeal of the image.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSNumber* gamma = @1.2; // Gamma value to adjust the contrast in the image.  Recommended value is 2.0.  Values between 0.0 and 1.0 will reduce contrast, while values above 1.0 will increase contrast.
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Adaptively adjust the contrast of the image to be more appealing and easy to see
+[apiInstance editContrastAdaptiveWithGamma:gamma
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editContrastAdaptive: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **gamma** | **NSNumber***| Gamma value to adjust the contrast in the image.  Recommended value is 2.0.  Values between 0.0 and 1.0 will reduce contrast, while values above 1.0 will increase contrast. | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: image/png
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editDrawPolygon**
+```objc
+-(NSURLSessionTask*) editDrawPolygonWithRequest: (CMDrawPolygonRequest*) request
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Draw a polygon onto an image
+
+Draw one or more polygons, with customized visuals, onto an image
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+CMDrawPolygonRequest* request = [[CMDrawPolygonRequest alloc] init]; // 
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Draw a polygon onto an image
+[apiInstance editDrawPolygonWithRequest:request
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editDrawPolygon: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **request** | [**CMDrawPolygonRequest***](CMDrawPolygonRequest.md)|  | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded
+ - **Accept**: image/png
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **editDrawRectangle**
 ```objc
 -(NSURLSessionTask*) editDrawRectangleWithRequest: (CMDrawRectangleRequest*) request
-        completionHandler: (void (^)(NSObject* output, NSError* error)) handler;
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Draw rectangle onto an image
+Draw a rectangle onto an image
 
 Draw one or more rectangles, with customized visuals, onto an image
 
@@ -98,9 +277,9 @@ CMDrawRectangleRequest* request = [[CMDrawRectangleRequest alloc] init]; //
 
 CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
-// Draw rectangle onto an image
+// Draw a rectangle onto an image
 [apiInstance editDrawRectangleWithRequest:request
-          completionHandler: ^(NSObject* output, NSError* error) {
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
@@ -118,7 +297,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**NSObject***
+**NSData***
 
 ### Authorization
 
@@ -134,7 +313,7 @@ Name | Type | Description  | Notes
 # **editDrawText**
 ```objc
 -(NSURLSessionTask*) editDrawTextWithRequest: (CMDrawTextRequest*) request
-        completionHandler: (void (^)(NSObject* output, NSError* error)) handler;
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
 Draw text onto an image
@@ -157,7 +336,7 @@ CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
 // Draw text onto an image
 [apiInstance editDrawTextWithRequest:request
-          completionHandler: ^(NSObject* output, NSError* error) {
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
@@ -175,7 +354,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**NSObject***
+**NSData***
 
 ### Authorization
 
@@ -185,6 +364,67 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded
  - **Accept**: image/png
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editRotate**
+```objc
+-(NSURLSessionTask*) editRotateWithDegrees: (NSNumber*) degrees
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Rotate an image any number of degrees
+
+Rotates an image by an arbitrary number of degrees
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSNumber* degrees = @1.2; // Degrees to rotate the image; values range from 0.0 to 360.0.
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Rotate an image any number of degrees
+[apiInstance editRotateWithDegrees:degrees
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editRotate: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **degrees** | **NSNumber***| Degrees to rotate the image; values range from 0.0 to 360.0. | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

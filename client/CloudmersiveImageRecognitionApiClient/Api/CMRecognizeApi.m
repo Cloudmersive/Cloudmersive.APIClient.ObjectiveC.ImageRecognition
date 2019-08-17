@@ -1,8 +1,10 @@
 #import "CMRecognizeApi.h"
 #import "CMQueryParamCollection.h"
 #import "CMApiClient.h"
+#import "CMFineTextDetectionResult.h"
 #import "CMImageDescriptionResponse.h"
 #import "CMObjectDetectionResult.h"
+#import "CMTextDetectionResult.h"
 #import "CMVehicleLicensePlateDetectionResult.h"
 
 
@@ -317,6 +319,124 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
                                     handler((CMObjectDetectionResult*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Detect fine text in a photo of a document
+/// Identify the position, and size of small/fine text within a photograph of a document.  Identify the location of small text in a photo - such as words and other forms of high density text.  Can be used on a scan of a document or a photograph (e.g. smartphone camera) of a document, page or receipt.  For OCR purposes - please see our Deep Learning OCR APIs.
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @returns CMFineTextDetectionResult*
+///
+-(NSURLSessionTask*) recognizeDetectTextFineWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMFineTextDetectionResult* output, NSError* error)) handler {
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMRecognizeApiErrorDomain code:kCMRecognizeApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/recognize/detect-text/fine"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"CMFineTextDetectionResult*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((CMFineTextDetectionResult*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Detect large text in a photo
+/// Identify the position, and size of large text within a photograph.  Identify the location of large text in a photo - such as signs, titles, etc. and other forms of large, low-density text.  Not suitable for high-density text (e.g. scans of documents, receipts, etc.) for OCR purposes - for OCR, please see our Deep Learning OCR APIs.
+///  @returns CMTextDetectionResult*
+///
+-(NSURLSessionTask*) recognizeDetectTextLargeWithCompletionHandler: 
+    (void (^)(CMTextDetectionResult* output, NSError* error)) handler {
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/recognize/detect-text/large"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"CMTextDetectionResult*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((CMTextDetectionResult*)data, error);
                                 }
                             }];
 }

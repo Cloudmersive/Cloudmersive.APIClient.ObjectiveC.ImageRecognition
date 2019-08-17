@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
+#import "CMFineTextDetectionResult.h"
 #import "CMImageDescriptionResponse.h"
 #import "CMObjectDetectionResult.h"
+#import "CMTextDetectionResult.h"
 #import "CMVehicleLicensePlateDetectionResult.h"
 #import "CMApi.h"
 
@@ -73,6 +75,29 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
 /// @return CMObjectDetectionResult*
 -(NSURLSessionTask*) recognizeDetectPeopleWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
+
+
+/// Detect fine text in a photo of a document
+/// Identify the position, and size of small/fine text within a photograph of a document.  Identify the location of small text in a photo - such as words and other forms of high density text.  Can be used on a scan of a document or a photograph (e.g. smartphone camera) of a document, page or receipt.  For OCR purposes - please see our Deep Learning OCR APIs.
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMFineTextDetectionResult*
+-(NSURLSessionTask*) recognizeDetectTextFineWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMFineTextDetectionResult* output, NSError* error)) handler;
+
+
+/// Detect large text in a photo
+/// Identify the position, and size of large text within a photograph.  Identify the location of large text in a photo - such as signs, titles, etc. and other forms of large, low-density text.  Not suitable for high-density text (e.g. scans of documents, receipts, etc.) for OCR purposes - for OCR, please see our Deep Learning OCR APIs.
+///
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMTextDetectionResult*
+-(NSURLSessionTask*) recognizeDetectTextLargeWithCompletionHandler: 
+    (void (^)(CMTextDetectionResult* output, NSError* error)) handler;
 
 
 /// Detect vehicle license plates in an image

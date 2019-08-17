@@ -2,7 +2,7 @@
 
   "podName" : "CloudmersiveImageRecognitionApiClient",
   "classPrefix" : "CM",
-  "podVersion" : "1.1.3",
+  "podVersion" : "1.1.4",
   "authorName" : "Cloudmersive",
   "authorEmail" : "support@cloudmersive.com",
   "gitRepoURL" : "https://github.com/Cloudmersive/Cloudmersive.APIClient.ObjectiveC.ImageRecognition"

@@ -1,6 +1,6 @@
-#import "CMPersonWithAge.h"
+#import "CMDrawPolygonInstance.h"
 
-@implementation CMPersonWithAge
+@implementation CMDrawPolygonInstance
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"faceLocation": @"FaceLocation", @"ageClassificationConfidence": @"AgeClassificationConfidence", @"ageClass": @"AgeClass", @"age": @"Age" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"borderColor": @"BorderColor", @"borderWidth": @"BorderWidth", @"fillColor": @"FillColor", @"points": @"Points" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"faceLocation", @"ageClassificationConfidence", @"ageClass", @"age"];
+  NSArray *optionalProperties = @[@"borderColor", @"borderWidth", @"fillColor", @"points"];
   return [optionalProperties containsObject:propertyName];
 }
 

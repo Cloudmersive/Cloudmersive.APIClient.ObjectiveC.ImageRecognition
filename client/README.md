@@ -44,6 +44,8 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMAgeDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDetectedLicensePlate.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDetectedObject.h>
+#import <CloudmersiveImageRecognitionApiClient/CMDrawPolygonInstance.h>
+#import <CloudmersiveImageRecognitionApiClient/CMDrawPolygonRequest.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawRectangleInstance.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawRectangleRequest.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawTextInstance.h>
@@ -55,11 +57,18 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMFaceMatch.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFacePoint.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFaceWithLandmarks.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFineTextDetectionResult.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFineTextItem.h>
+#import <CloudmersiveImageRecognitionApiClient/CMGenderDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMImageDescriptionResponse.h>
 #import <CloudmersiveImageRecognitionApiClient/CMNsfwResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMObjectDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMPersonWithAge.h>
+#import <CloudmersiveImageRecognitionApiClient/CMPersonWithGender.h>
+#import <CloudmersiveImageRecognitionApiClient/CMPolygonPoint.h>
 #import <CloudmersiveImageRecognitionApiClient/CMRecognitionOutcome.h>
+#import <CloudmersiveImageRecognitionApiClient/CMTextDetectionResult.h>
+#import <CloudmersiveImageRecognitionApiClient/CMTextItem.h>
 #import <CloudmersiveImageRecognitionApiClient/CMVehicleLicensePlateDetectionResult.h>
 // load API classes for accessing endpoints
 #import <CloudmersiveImageRecognitionApiClient/CMArtisticApi.h>
@@ -115,13 +124,18 @@ All URIs are relative to *https://api.cloudmersive.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CMArtisticApi* | [**artisticPainting**](docs/CMArtisticApi.md#artisticpainting) | **POST** /image/artistic/painting/{style} | Transform an image into an artistic painting automatically
+*CMEditApi* | [**editAutoOrient**](docs/CMEditApi.md#editautoorient) | **POST** /image/edit/auto-orient/remove-exif | Normalizes image rotation and removes EXIF rotation data
 *CMEditApi* | [**editCompositeBasic**](docs/CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
-*CMEditApi* | [**editDrawRectangle**](docs/CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw rectangle onto an image
+*CMEditApi* | [**editContrastAdaptive**](docs/CMEditApi.md#editcontrastadaptive) | **POST** /image/edit/contrast/{gamma}/adaptive | Adaptively adjust the contrast of the image to be more appealing and easy to see
+*CMEditApi* | [**editDrawPolygon**](docs/CMEditApi.md#editdrawpolygon) | **POST** /image/edit/draw/polygon | Draw a polygon onto an image
+*CMEditApi* | [**editDrawRectangle**](docs/CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw a rectangle onto an image
 *CMEditApi* | [**editDrawText**](docs/CMEditApi.md#editdrawtext) | **POST** /image/edit/draw/text | Draw text onto an image
+*CMEditApi* | [**editRotate**](docs/CMEditApi.md#editrotate) | **POST** /image/edit/rotate/{degrees}/angle | Rotate an image any number of degrees
 *CMFaceApi* | [**faceCompare**](docs/CMFaceApi.md#facecompare) | **POST** /image/face/compare-and-match | Compare and match faces
 *CMFaceApi* | [**faceCropFirst**](docs/CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face (square)
 *CMFaceApi* | [**faceCropFirstRound**](docs/CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face (round)
 *CMFaceApi* | [**faceDetectAge**](docs/CMFaceApi.md#facedetectage) | **POST** /image/face/detect-age | Detect the age of people in an image
+*CMFaceApi* | [**faceDetectGender**](docs/CMFaceApi.md#facedetectgender) | **POST** /image/face/detect-gender | Detect the gender of people in an image
 *CMFaceApi* | [**faceLocate**](docs/CMFaceApi.md#facelocate) | **POST** /image/face/locate | Find faces in an image
 *CMFaceApi* | [**faceLocateWithLandmarks**](docs/CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
 *CMNsfwApi* | [**nsfwClassify**](docs/CMNsfwApi.md#nsfwclassify) | **POST** /image/nsfw/classify | Not safe for work (NSFW) racy content classification
@@ -129,6 +143,8 @@ Class | Method | HTTP request | Description
 *CMRecognizeApi* | [**recognizeDetectAndUnskewDocument**](docs/CMRecognizeApi.md#recognizedetectandunskewdocument) | **POST** /image/recognize/detect-document/unskew | Detect and unskew a photo of a document
 *CMRecognizeApi* | [**recognizeDetectObjects**](docs/CMRecognizeApi.md#recognizedetectobjects) | **POST** /image/recognize/detect-objects | Detect objects, including types and locations, in an image
 *CMRecognizeApi* | [**recognizeDetectPeople**](docs/CMRecognizeApi.md#recognizedetectpeople) | **POST** /image/recognize/detect-people | Detect people, including locations, in an image
+*CMRecognizeApi* | [**recognizeDetectTextFine**](docs/CMRecognizeApi.md#recognizedetecttextfine) | **POST** /image/recognize/detect-text/fine | Detect fine text in a photo of a document
+*CMRecognizeApi* | [**recognizeDetectTextLarge**](docs/CMRecognizeApi.md#recognizedetecttextlarge) | **POST** /image/recognize/detect-text/large | Detect large text in a photo
 *CMRecognizeApi* | [**recognizeDetectVehicleLicensePlates**](docs/CMRecognizeApi.md#recognizedetectvehiclelicenseplates) | **POST** /image/recognize/detect-vehicle-license-plates | Detect vehicle license plates in an image
 *CMResizeApi* | [**resizePost**](docs/CMResizeApi.md#resizepost) | **POST** /image/resize/preserveAspectRatio/{maxWidth}/{maxHeight} | Resize an image with parameters
 
@@ -138,6 +154,8 @@ Class | Method | HTTP request | Description
  - [CMAgeDetectionResult](docs/CMAgeDetectionResult.md)
  - [CMDetectedLicensePlate](docs/CMDetectedLicensePlate.md)
  - [CMDetectedObject](docs/CMDetectedObject.md)
+ - [CMDrawPolygonInstance](docs/CMDrawPolygonInstance.md)
+ - [CMDrawPolygonRequest](docs/CMDrawPolygonRequest.md)
  - [CMDrawRectangleInstance](docs/CMDrawRectangleInstance.md)
  - [CMDrawRectangleRequest](docs/CMDrawRectangleRequest.md)
  - [CMDrawTextInstance](docs/CMDrawTextInstance.md)
@@ -149,11 +167,18 @@ Class | Method | HTTP request | Description
  - [CMFaceMatch](docs/CMFaceMatch.md)
  - [CMFacePoint](docs/CMFacePoint.md)
  - [CMFaceWithLandmarks](docs/CMFaceWithLandmarks.md)
+ - [CMFineTextDetectionResult](docs/CMFineTextDetectionResult.md)
+ - [CMFineTextItem](docs/CMFineTextItem.md)
+ - [CMGenderDetectionResult](docs/CMGenderDetectionResult.md)
  - [CMImageDescriptionResponse](docs/CMImageDescriptionResponse.md)
  - [CMNsfwResult](docs/CMNsfwResult.md)
  - [CMObjectDetectionResult](docs/CMObjectDetectionResult.md)
  - [CMPersonWithAge](docs/CMPersonWithAge.md)
+ - [CMPersonWithGender](docs/CMPersonWithGender.md)
+ - [CMPolygonPoint](docs/CMPolygonPoint.md)
  - [CMRecognitionOutcome](docs/CMRecognitionOutcome.md)
+ - [CMTextDetectionResult](docs/CMTextDetectionResult.md)
+ - [CMTextItem](docs/CMTextItem.md)
  - [CMVehicleLicensePlateDetectionResult](docs/CMVehicleLicensePlateDetectionResult.md)
 
 

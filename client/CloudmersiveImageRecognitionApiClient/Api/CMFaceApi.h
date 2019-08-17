@@ -3,6 +3,7 @@
 #import "CMFaceCompareResponse.h"
 #import "CMFaceLocateResponse.h"
 #import "CMFaceLocateWithLandmarksResponse.h"
+#import "CMGenderDetectionResult.h"
 #import "CMApi.h"
 
 /**
@@ -74,6 +75,18 @@ extern NSInteger kCMFaceApiMissingParamErrorCode;
 /// @return CMAgeDetectionResult*
 -(NSURLSessionTask*) faceDetectAgeWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(CMAgeDetectionResult* output, NSError* error)) handler;
+
+
+/// Detect the gender of people in an image
+/// Identify the gender, position, and size of human faces in an image, along with a recognition confidence level.  People in the image should be facing the camera.
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMGenderDetectionResult*
+-(NSURLSessionTask*) faceDetectGenderWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMGenderDetectionResult* output, NSError* error)) handler;
 
 
 /// Find faces in an image

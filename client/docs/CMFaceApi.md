@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**faceCropFirst**](CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face (square)
 [**faceCropFirstRound**](CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face (round)
 [**faceDetectAge**](CMFaceApi.md#facedetectage) | **POST** /image/face/detect-age | Detect the age of people in an image
+[**faceDetectGender**](CMFaceApi.md#facedetectgender) | **POST** /image/face/detect-gender | Detect the gender of people in an image
 [**faceLocate**](CMFaceApi.md#facelocate) | **POST** /image/face/locate | Find faces in an image
 [**faceLocateWithLandmarks**](CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
 
@@ -232,6 +233,63 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**CMAgeDetectionResult***](CMAgeDetectionResult.md)
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json, text/json, application/xml, text/xml
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **faceDetectGender**
+```objc
+-(NSURLSessionTask*) faceDetectGenderWithImageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(CMGenderDetectionResult* output, NSError* error)) handler;
+```
+
+Detect the gender of people in an image
+
+Identify the gender, position, and size of human faces in an image, along with a recognition confidence level.  People in the image should be facing the camera.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMFaceApi*apiInstance = [[CMFaceApi alloc] init];
+
+// Detect the gender of people in an image
+[apiInstance faceDetectGenderWithImageFile:imageFile
+          completionHandler: ^(CMGenderDetectionResult* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMFaceApi->faceDetectGender: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+[**CMGenderDetectionResult***](CMGenderDetectionResult.md)
 
 ### Authorization
 

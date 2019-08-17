@@ -1,6 +1,6 @@
-#import "CMPersonWithAge.h"
+#import "CMPersonWithGender.h"
 
-@implementation CMPersonWithAge
+@implementation CMPersonWithGender
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"faceLocation": @"FaceLocation", @"ageClassificationConfidence": @"AgeClassificationConfidence", @"ageClass": @"AgeClass", @"age": @"Age" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"faceLocation": @"FaceLocation", @"genderClassificationConfidence": @"GenderClassificationConfidence", @"genderClass": @"GenderClass" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"faceLocation", @"ageClassificationConfidence", @"ageClass", @"age"];
+  NSArray *optionalProperties = @[@"faceLocation", @"genderClassificationConfidence", @"genderClass"];
   return [optionalProperties containsObject:propertyName];
 }
 

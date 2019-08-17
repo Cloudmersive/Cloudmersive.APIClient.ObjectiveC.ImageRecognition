@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "CMDrawPolygonRequest.h"
 #import "CMDrawRectangleRequest.h"
 #import "CMDrawTextRequest.h"
 #import "CMApi.h"
@@ -24,6 +25,18 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
 
 -(instancetype) initWithApiClient:(CMApiClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
+/// Normalizes image rotation and removes EXIF rotation data
+/// Automatically orients the input image based on EXIF information and then removes the EXIF information.  EXIF is an additional set of information stored in some images taken with cell phone cameras based on the orientation of the camera.  By normalizing rotation and removing EXIF data these images become much easier to process.
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editAutoOrientWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
 /// Composite two images together
 /// Composites two input images together; a layered image onto a base image.  The first image you input is the base image.  The second image (the layered image) will be composited on top of this base image.  Supports PNG transparency.  To control padding you can include transparent pixels at the border(s) of your layered images as appropriate.
 ///
@@ -33,23 +46,49 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
 /// 
 ///  code:200 message:"OK"
 ///
-/// @return NSObject*
+/// @return NSData*
 -(NSURLSessionTask*) editCompositeBasicWithLocation: (NSString*) location
     baseImage: (NSURL*) baseImage
     layeredImage: (NSURL*) layeredImage
-    completionHandler: (void (^)(NSObject* output, NSError* error)) handler;
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 
-/// Draw rectangle onto an image
+/// Adaptively adjust the contrast of the image to be more appealing and easy to see
+/// Uses Gamma to adjust the contrast adaptively the way the human eye sees the world.  Results significantly improve the viewability and visual appeal of the image.
+///
+/// @param gamma Gamma value to adjust the contrast in the image.  Recommended value is 2.0.  Values between 0.0 and 1.0 will reduce contrast, while values above 1.0 will increase contrast.
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editContrastAdaptiveWithGamma: (NSNumber*) gamma
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Draw a polygon onto an image
+/// Draw one or more polygons, with customized visuals, onto an image
+///
+/// @param request 
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editDrawPolygonWithRequest: (CMDrawPolygonRequest*) request
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Draw a rectangle onto an image
 /// Draw one or more rectangles, with customized visuals, onto an image
 ///
 /// @param request 
 /// 
 ///  code:200 message:"OK"
 ///
-/// @return NSObject*
+/// @return NSData*
 -(NSURLSessionTask*) editDrawRectangleWithRequest: (CMDrawRectangleRequest*) request
-    completionHandler: (void (^)(NSObject* output, NSError* error)) handler;
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 
 /// Draw text onto an image
@@ -59,9 +98,23 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
 /// 
 ///  code:200 message:"OK"
 ///
-/// @return NSObject*
+/// @return NSData*
 -(NSURLSessionTask*) editDrawTextWithRequest: (CMDrawTextRequest*) request
-    completionHandler: (void (^)(NSObject* output, NSError* error)) handler;
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Rotate an image any number of degrees
+/// Rotates an image by an arbitrary number of degrees
+///
+/// @param degrees Degrees to rotate the image; values range from 0.0 to 360.0.
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editRotateWithDegrees: (NSNumber*) degrees
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 
 

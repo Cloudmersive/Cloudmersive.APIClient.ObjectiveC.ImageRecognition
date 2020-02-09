@@ -67,10 +67,30 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 
+/// Crop an image to a rectangular area
+/// Crop an image to a target rectangular area
+///
+/// @param left The left edge of the rectangular crop area in pixels (X).
+/// @param top The top edge of the rectangular crop area in pixels (Y).
+/// @param width The width of the rectangular crop area in pixels.
+/// @param height The height of the rectangular crop area in pixels.
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editCropRectangleWithLeft: (NSNumber*) left
+    top: (NSNumber*) top
+    width: (NSNumber*) width
+    height: (NSNumber*) height
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
 /// Draw a polygon onto an image
 /// Draw one or more polygons, with customized visuals, onto an image
 ///
-/// @param request 
+/// @param request Polygon drawing request parameters
 /// 
 ///  code:200 message:"OK"
 ///
@@ -82,7 +102,7 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
 /// Draw a rectangle onto an image
 /// Draw one or more rectangles, with customized visuals, onto an image
 ///
-/// @param request 
+/// @param request Draw rectangle parameters
 /// 
 ///  code:200 message:"OK"
 ///
@@ -94,12 +114,68 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
 /// Draw text onto an image
 /// Draw one or more pieces of text, with customized visuals, onto an image
 ///
-/// @param request 
+/// @param request Draw text parameters
 /// 
 ///  code:200 message:"OK"
 ///
 /// @return NSData*
 -(NSURLSessionTask*) editDrawTextWithRequest: (CMDrawTextRequest*) request
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Add a customizeable drop shadow to an image
+/// Add a customizeable drop shadow to the image
+///
+/// @param X Horizontal (X) offset of the drop shadow
+/// @param Y Vertical (Y) offset of the drop shadow
+/// @param sigma Sigma (blur distance) of the drop shadow
+/// @param opacity Opacity of the drop shadow; 0 is 0% and 100 is 100%
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editDropShadowWithX: (NSNumber*) X
+    Y: (NSNumber*) Y
+    sigma: (NSNumber*) sigma
+    opacity: (NSNumber*) opacity
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Invert, negate the colors in the image
+/// Inverts (negates) all of the colors in the image.  If the image contains transparency, the transparency will first be removed prior to inverting the image.
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editInvertWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Remove EXIF data from the image
+/// Removes any EXIF data and profiles .
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editRemoveExifDataWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Remove transparency from the image
+/// Removes any active transparency in the image.  Effectively renders the image at the same resolution, in the same file format, over a white background, thus removing transparency.
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editRemoveTransparencyWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 

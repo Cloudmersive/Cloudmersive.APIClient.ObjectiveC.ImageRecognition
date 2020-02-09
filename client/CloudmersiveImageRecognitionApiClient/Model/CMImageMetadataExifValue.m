@@ -1,6 +1,6 @@
-#import "CMFaceLocateWithLandmarksResponse.h"
+#import "CMImageMetadataExifValue.h"
 
-@implementation CMFaceLocateWithLandmarksResponse
+@implementation CMImageMetadataExifValue
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"faces": @"Faces", @"faceCount": @"FaceCount", @"errorDetails": @"ErrorDetails" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"tag": @"Tag", @"dataType": @"DataType", @"dataValue": @"DataValue" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"successful", @"faces", @"faceCount", @"errorDetails"];
+  NSArray *optionalProperties = @[@"tag", @"dataType", @"dataValue"];
   return [optionalProperties containsObject:propertyName];
 }
 

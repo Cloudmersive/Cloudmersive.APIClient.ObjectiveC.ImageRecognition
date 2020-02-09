@@ -22,7 +22,7 @@ extern NSInteger kCMResizeApiMissingParamErrorCode;
 
 -(instancetype) initWithApiClient:(CMApiClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
-/// Resize an image with parameters
+/// Resize an image while preserving aspect ratio
 /// Resize an image to a maximum width and maximum height, while preserving the image's original aspect ratio
 ///
 /// @param maxWidth Maximum width of the output image - final image will be as large as possible while less than or equial to this width
@@ -34,6 +34,22 @@ extern NSInteger kCMResizeApiMissingParamErrorCode;
 /// @return NSData*
 -(NSURLSessionTask*) resizePostWithMaxWidth: (NSNumber*) maxWidth
     maxHeight: (NSNumber*) maxHeight
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Resize an image
+/// Resize an image to a specific width and specific height
+///
+/// @param width Width of the output image - final image will be exactly this width
+/// @param height Height of the output image - final image will be exactly this height
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) resizeResizeSimpleWithWidth: (NSNumber*) width
+    height: (NSNumber*) height
     imageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 

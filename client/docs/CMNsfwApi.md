@@ -4,7 +4,7 @@ All URIs are relative to *https://api.cloudmersive.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**nsfwClassify**](CMNsfwApi.md#nsfwclassify) | **POST** /image/nsfw/classify | Not safe for work (NSFW) racy content classification
+[**nsfwClassify**](CMNsfwApi.md#nsfwclassify) | **POST** /image/nsfw/classify | Not safe for work NSFW racy content classification
 
 
 # **nsfwClassify**
@@ -13,7 +13,7 @@ Method | HTTP request | Description
         completionHandler: (void (^)(CMNsfwResult* output, NSError* error)) handler;
 ```
 
-Not safe for work (NSFW) racy content classification
+Not safe for work NSFW racy content classification
 
 Classify an image into Not Safe For Work (NSFW)/Porn/Racy content and Safe Content.
 
@@ -31,7 +31,7 @@ NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file t
 
 CMNsfwApi*apiInstance = [[CMNsfwApi alloc] init];
 
-// Not safe for work (NSFW) racy content classification
+// Not safe for work NSFW racy content classification
 [apiInstance nsfwClassifyWithImageFile:imageFile
           completionHandler: ^(CMNsfwResult* output, NSError* error) {
                         if (output) {

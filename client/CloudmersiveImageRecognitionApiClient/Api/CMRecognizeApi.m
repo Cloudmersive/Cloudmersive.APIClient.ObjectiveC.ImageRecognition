@@ -1,6 +1,7 @@
 #import "CMRecognizeApi.h"
 #import "CMQueryParamCollection.h"
 #import "CMApiClient.h"
+#import "CMFindSymbolResult.h"
 #import "CMFineTextDetectionResult.h"
 #import "CMImageDescriptionResponse.h"
 #import "CMObjectDetectionResult.h"
@@ -192,7 +193,7 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
 }
 
 ///
-/// Detect objects, including types and locations, in an image
+/// Detect objects including types and locations in an image
 /// Identify the position, size and description of objects in an image, along with a recognition confidence level.  Detects both human people and objects in an image.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
@@ -258,7 +259,7 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
 }
 
 ///
-/// Detect people, including locations, in an image
+/// Detect people including locations in an image
 /// Identify the position, and size of human people in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
@@ -392,10 +393,23 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
 ///
 /// Detect large text in a photo
 /// Identify the position, and size of large text within a photograph.  Identify the location of large text in a photo - such as signs, titles, etc. and other forms of large, low-density text.  Not suitable for high-density text (e.g. scans of documents, receipts, etc.) for OCR purposes - for OCR, please see our Deep Learning OCR APIs.
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
 ///  @returns CMTextDetectionResult*
 ///
--(NSURLSessionTask*) recognizeDetectTextLargeWithCompletionHandler: 
-    (void (^)(CMTextDetectionResult* output, NSError* error)) handler {
+-(NSURLSessionTask*) recognizeDetectTextLargeWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMTextDetectionResult* output, NSError* error)) handler {
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMRecognizeApiErrorDomain code:kCMRecognizeApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
     NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/recognize/detect-text/large"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
@@ -413,7 +427,7 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
     NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
 
     // request content type
-    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[]];
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
 
     // Authentication setting
     NSArray *authSettings = @[@"Apikey"];
@@ -421,6 +435,7 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
     id bodyParam = nil;
     NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
 
     return [self.apiClient requestWithPath: resourcePath
                                     method: @"POST"
@@ -443,7 +458,7 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
 
 ///
 /// Detect vehicle license plates in an image
-/// Identify the position, and size, and content of vehicle license plates in an image.  License plates should be within 15-20 degrees on-axis to the camera.
+/// Identify the position, and size, and content of vehicle license plates in an image.  License plates should be within 15-20 degrees on-axis to the camera.  Supported image formats are JPG, PNG and BMP.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
 ///  @returns CMVehicleLicensePlateDetectionResult*
@@ -503,6 +518,87 @@ NSInteger kCMRecognizeApiMissingParamErrorCode = 234513;
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
                                     handler((CMVehicleLicensePlateDetectionResult*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Find the location of a symbol in an image
+/// Determine if an image contains a symbol, and if so, the location of that symbol in the image.
+///  @param inputImage Image file to search through for the target image. 
+///
+///  @param targetImage Image to find in the input image. 
+///
+///  @returns CMFindSymbolResult*
+///
+-(NSURLSessionTask*) recognizeFindSymbolWithInputImage: (NSURL*) inputImage
+    targetImage: (NSURL*) targetImage
+    completionHandler: (void (^)(CMFindSymbolResult* output, NSError* error)) handler {
+    // verify the required parameter 'inputImage' is set
+    if (inputImage == nil) {
+        NSParameterAssert(inputImage);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"inputImage"] };
+            NSError* error = [NSError errorWithDomain:kCMRecognizeApiErrorDomain code:kCMRecognizeApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'targetImage' is set
+    if (targetImage == nil) {
+        NSParameterAssert(targetImage);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"targetImage"] };
+            NSError* error = [NSError errorWithDomain:kCMRecognizeApiErrorDomain code:kCMRecognizeApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/recognize/find/symbol"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"inputImage"] = inputImage;
+    localVarFiles[@"targetImage"] = targetImage;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"CMFindSymbolResult*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((CMFindSymbolResult*)data, error);
                                 }
                             }];
 }

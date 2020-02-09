@@ -22,20 +22,24 @@
 
 @interface CMDetectedLicensePlate : CMObject
 
-
-@property(nonatomic) NSNumber* locationX;
-
-@property(nonatomic) NSNumber* locationY;
-
-@property(nonatomic) NSNumber* width;
-
-@property(nonatomic) NSNumber* height;
 /* Text from the license plate, highest-confidence result [optional]
  */
 @property(nonatomic) NSString* licensePlateTextBestMatch;
 /* Alternate text from the license plate, based on second-highest-confidence result [optional]
  */
 @property(nonatomic) NSString* licensePlateTextRunnerUp;
+/* X location of the left edge of the license plate, starting from the left edge of the photo (X = 0) [optional]
+ */
+@property(nonatomic) NSNumber* locationX;
+/* Y location of the top edge of the license plate, starting from the top edge of the photo (Y = 0) [optional]
+ */
+@property(nonatomic) NSNumber* locationY;
+/* Width of the license plate's location in pixels [optional]
+ */
+@property(nonatomic) NSNumber* width;
+/* Height of the license plate's location in pixels [optional]
+ */
+@property(nonatomic) NSNumber* height;
 /* Confidence score on a range of 0.0 - 1.0 of the accuracy of the detected license plate, with higher scores being better; values about 0.75 are high confidence [optional]
  */
 @property(nonatomic) NSNumber* licensePlateRecognitionConfidenceLevel;

@@ -1,6 +1,6 @@
-#import "CMFaceLocateWithLandmarksResponse.h"
+#import "CMFindSymbolResult.h"
 
-@implementation CMFaceLocateWithLandmarksResponse
+@implementation CMFindSymbolResult
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"faces": @"Faces", @"faceCount": @"FaceCount", @"errorDetails": @"ErrorDetails" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"matchScore": @"MatchScore", @"xLeft": @"XLeft", @"yTop": @"YTop", @"width": @"Width", @"height": @"Height" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"successful", @"faces", @"faceCount", @"errorDetails"];
+  NSArray *optionalProperties = @[@"successful", @"matchScore", @"xLeft", @"yTop", @"width", @"height"];
   return [optionalProperties containsObject:propertyName];
 }
 

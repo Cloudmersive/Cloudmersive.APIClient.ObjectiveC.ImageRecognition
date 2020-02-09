@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "CMFindSymbolResult.h"
 #import "CMFineTextDetectionResult.h"
 #import "CMImageDescriptionResponse.h"
 #import "CMObjectDetectionResult.h"
@@ -53,7 +54,7 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 
-/// Detect objects, including types and locations, in an image
+/// Detect objects including types and locations in an image
 /// Identify the position, size and description of objects in an image, along with a recognition confidence level.  Detects both human people and objects in an image.
 ///
 /// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
@@ -65,7 +66,7 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
     completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
 
 
-/// Detect people, including locations, in an image
+/// Detect people including locations in an image
 /// Identify the position, and size of human people in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
 ///
 /// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
@@ -92,16 +93,17 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
 /// Detect large text in a photo
 /// Identify the position, and size of large text within a photograph.  Identify the location of large text in a photo - such as signs, titles, etc. and other forms of large, low-density text.  Not suitable for high-density text (e.g. scans of documents, receipts, etc.) for OCR purposes - for OCR, please see our Deep Learning OCR APIs.
 ///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 /// 
 ///  code:200 message:"OK"
 ///
 /// @return CMTextDetectionResult*
--(NSURLSessionTask*) recognizeDetectTextLargeWithCompletionHandler: 
-    (void (^)(CMTextDetectionResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) recognizeDetectTextLargeWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(CMTextDetectionResult* output, NSError* error)) handler;
 
 
 /// Detect vehicle license plates in an image
-/// Identify the position, and size, and content of vehicle license plates in an image.  License plates should be within 15-20 degrees on-axis to the camera.
+/// Identify the position, and size, and content of vehicle license plates in an image.  License plates should be within 15-20 degrees on-axis to the camera.  Supported image formats are JPG, PNG and BMP.
 ///
 /// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 /// 
@@ -110,6 +112,20 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
 /// @return CMVehicleLicensePlateDetectionResult*
 -(NSURLSessionTask*) recognizeDetectVehicleLicensePlatesWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(CMVehicleLicensePlateDetectionResult* output, NSError* error)) handler;
+
+
+/// Find the location of a symbol in an image
+/// Determine if an image contains a symbol, and if so, the location of that symbol in the image.
+///
+/// @param inputImage Image file to search through for the target image.
+/// @param targetImage Image to find in the input image.
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMFindSymbolResult*
+-(NSURLSessionTask*) recognizeFindSymbolWithInputImage: (NSURL*) inputImage
+    targetImage: (NSURL*) targetImage
+    completionHandler: (void (^)(CMFindSymbolResult* output, NSError* error)) handler;
 
 
 

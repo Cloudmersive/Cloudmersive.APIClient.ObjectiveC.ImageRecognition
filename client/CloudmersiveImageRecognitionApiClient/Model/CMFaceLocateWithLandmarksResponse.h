@@ -25,8 +25,6 @@
 
 @interface CMFaceLocateWithLandmarksResponse : CMObject
 
-
-@property(nonatomic) NSString* errorDetails;
 /* True if the operation was successful, false otherwise [optional]
  */
 @property(nonatomic) NSNumber* successful;
@@ -36,5 +34,8 @@
 /* Number of faces found in the image [optional]
  */
 @property(nonatomic) NSNumber* faceCount;
+/* Details of any errors that occurred [optional]
+ */
+@property(nonatomic) NSString* errorDetails;
 
 @end

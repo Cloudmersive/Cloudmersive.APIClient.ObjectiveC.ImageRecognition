@@ -25,24 +25,6 @@
 
 @interface CMFaceWithLandmarks : CMObject
 
-
-@property(nonatomic) NSArray<CMFacePoint>* leftEyebrow;
-
-@property(nonatomic) NSArray<CMFacePoint>* rightEyebrow;
-
-@property(nonatomic) NSArray<CMFacePoint>* leftEye;
-
-@property(nonatomic) NSArray<CMFacePoint>* rightEye;
-
-@property(nonatomic) NSArray<CMFacePoint>* bottomAndSidesOfFace;
-
-@property(nonatomic) NSArray<CMFacePoint>* noseBridge;
-
-@property(nonatomic) NSArray<CMFacePoint>* noseBottom;
-
-@property(nonatomic) NSArray<CMFacePoint>* lipsInnerOutline;
-
-@property(nonatomic) NSArray<CMFacePoint>* lipsOuterOutline;
 /* X coordinate of the left side of the face [optional]
  */
 @property(nonatomic) NSNumber* leftX;
@@ -55,5 +37,32 @@
 /* Y coordinate of the bottom side of the face [optional]
  */
 @property(nonatomic) NSNumber* bottomY;
+/* Point locations of the left eyebrow (the eyebrow cloesest to the left side of the picture) [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* leftEyebrow;
+/* Point locations of the right eyebrow (the eyebrow cloesest to the right side of the picture) [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* rightEyebrow;
+/* Point locations of the left eye (the eye closest to the left side of the picture) [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* leftEye;
+/* Point locations of the right eye (the eye closest to the right side of the picture) [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* rightEye;
+/* Point locations of the bottom and sides of the face (cheeks and chin) [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* bottomAndSidesOfFace;
+/* Point locations of the nose bridge (the vertical portion of the nose) [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* noseBridge;
+/* Point locations of the bottom (nostrils) of the nose [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* noseBottom;
+/* Point locations of the inner outline of the lips [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* lipsInnerOutline;
+/* Point locations of the outer outline of the lips [optional]
+ */
+@property(nonatomic) NSArray<CMFacePoint>* lipsOuterOutline;
 
 @end

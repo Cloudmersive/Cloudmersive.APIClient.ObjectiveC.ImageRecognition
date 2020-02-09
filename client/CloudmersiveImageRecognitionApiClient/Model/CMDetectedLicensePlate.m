@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"locationX": @"LocationX", @"locationY": @"LocationY", @"width": @"Width", @"height": @"Height", @"licensePlateTextBestMatch": @"LicensePlateText_BestMatch", @"licensePlateTextRunnerUp": @"LicensePlateText_RunnerUp", @"licensePlateRecognitionConfidenceLevel": @"LicensePlateRecognitionConfidenceLevel" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"licensePlateTextBestMatch": @"LicensePlateText_BestMatch", @"licensePlateTextRunnerUp": @"LicensePlateText_RunnerUp", @"locationX": @"LocationX", @"locationY": @"LocationY", @"width": @"Width", @"height": @"Height", @"licensePlateRecognitionConfidenceLevel": @"LicensePlateRecognitionConfidenceLevel" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"locationX", @"locationY", @"width", @"height", @"licensePlateTextBestMatch", @"licensePlateTextRunnerUp", @"licensePlateRecognitionConfidenceLevel"];
+  NSArray *optionalProperties = @[@"licensePlateTextBestMatch", @"licensePlateTextRunnerUp", @"locationX", @"locationY", @"width", @"height", @"licensePlateRecognitionConfidenceLevel"];
   return [optionalProperties containsObject:propertyName];
 }
 

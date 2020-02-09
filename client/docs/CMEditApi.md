@@ -7,9 +7,14 @@ Method | HTTP request | Description
 [**editAutoOrient**](CMEditApi.md#editautoorient) | **POST** /image/edit/auto-orient/remove-exif | Normalizes image rotation and removes EXIF rotation data
 [**editCompositeBasic**](CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
 [**editContrastAdaptive**](CMEditApi.md#editcontrastadaptive) | **POST** /image/edit/contrast/{gamma}/adaptive | Adaptively adjust the contrast of the image to be more appealing and easy to see
+[**editCropRectangle**](CMEditApi.md#editcroprectangle) | **POST** /image/edit/crop/rectangle/{left}/{top}/{width}/{height} | Crop an image to a rectangular area
 [**editDrawPolygon**](CMEditApi.md#editdrawpolygon) | **POST** /image/edit/draw/polygon | Draw a polygon onto an image
 [**editDrawRectangle**](CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw a rectangle onto an image
 [**editDrawText**](CMEditApi.md#editdrawtext) | **POST** /image/edit/draw/text | Draw text onto an image
+[**editDropShadow**](CMEditApi.md#editdropshadow) | **POST** /image/edit/drop-shadow/{X}/{Y}/{sigma}/{opacity} | Add a customizeable drop shadow to an image
+[**editInvert**](CMEditApi.md#editinvert) | **POST** /image/edit/invert | Invert, negate the colors in the image
+[**editRemoveExifData**](CMEditApi.md#editremoveexifdata) | **POST** /image/edit/remove-exif | Remove EXIF data from the image
+[**editRemoveTransparency**](CMEditApi.md#editremovetransparency) | **POST** /image/edit/remove-transparency | Remove transparency from the image
 [**editRotate**](CMEditApi.md#editrotate) | **POST** /image/edit/rotate/{degrees}/angle | Rotate an image any number of degrees
 
 
@@ -131,7 +136,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: image/png
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -192,7 +197,80 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: image/png
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editCropRectangle**
+```objc
+-(NSURLSessionTask*) editCropRectangleWithLeft: (NSNumber*) left
+    top: (NSNumber*) top
+    width: (NSNumber*) width
+    height: (NSNumber*) height
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Crop an image to a rectangular area
+
+Crop an image to a target rectangular area
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSNumber* left = @56; // The left edge of the rectangular crop area in pixels (X).
+NSNumber* top = @56; // The top edge of the rectangular crop area in pixels (Y).
+NSNumber* width = @56; // The width of the rectangular crop area in pixels.
+NSNumber* height = @56; // The height of the rectangular crop area in pixels.
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Crop an image to a rectangular area
+[apiInstance editCropRectangleWithLeft:left
+              top:top
+              width:width
+              height:height
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editCropRectangle: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **left** | **NSNumber***| The left edge of the rectangular crop area in pixels (X). | 
+ **top** | **NSNumber***| The top edge of the rectangular crop area in pixels (Y). | 
+ **width** | **NSNumber***| The width of the rectangular crop area in pixels. | 
+ **height** | **NSNumber***| The height of the rectangular crop area in pixels. | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -216,7 +294,7 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
-CMDrawPolygonRequest* request = [[CMDrawPolygonRequest alloc] init]; // 
+CMDrawPolygonRequest* request = [[CMDrawPolygonRequest alloc] init]; // Polygon drawing request parameters
 
 CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
@@ -236,7 +314,7 @@ CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**CMDrawPolygonRequest***](CMDrawPolygonRequest.md)|  | 
+ **request** | [**CMDrawPolygonRequest***](CMDrawPolygonRequest.md)| Polygon drawing request parameters | 
 
 ### Return type
 
@@ -249,7 +327,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded
- - **Accept**: image/png
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -273,7 +351,7 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
-CMDrawRectangleRequest* request = [[CMDrawRectangleRequest alloc] init]; // 
+CMDrawRectangleRequest* request = [[CMDrawRectangleRequest alloc] init]; // Draw rectangle parameters
 
 CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
@@ -293,7 +371,7 @@ CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**CMDrawRectangleRequest***](CMDrawRectangleRequest.md)|  | 
+ **request** | [**CMDrawRectangleRequest***](CMDrawRectangleRequest.md)| Draw rectangle parameters | 
 
 ### Return type
 
@@ -306,7 +384,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded
- - **Accept**: image/png
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -330,7 +408,7 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
-CMDrawTextRequest* request = [[CMDrawTextRequest alloc] init]; // 
+CMDrawTextRequest* request = [[CMDrawTextRequest alloc] init]; // Draw text parameters
 
 CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
@@ -350,7 +428,7 @@ CMEditApi*apiInstance = [[CMEditApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**CMDrawTextRequest***](CMDrawTextRequest.md)|  | 
+ **request** | [**CMDrawTextRequest***](CMDrawTextRequest.md)| Draw text parameters | 
 
 ### Return type
 
@@ -363,7 +441,251 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded
- - **Accept**: image/png
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editDropShadow**
+```objc
+-(NSURLSessionTask*) editDropShadowWithX: (NSNumber*) X
+    Y: (NSNumber*) Y
+    sigma: (NSNumber*) sigma
+    opacity: (NSNumber*) opacity
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Add a customizeable drop shadow to an image
+
+Add a customizeable drop shadow to the image
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSNumber* X = @56; // Horizontal (X) offset of the drop shadow
+NSNumber* Y = @56; // Vertical (Y) offset of the drop shadow
+NSNumber* sigma = @56; // Sigma (blur distance) of the drop shadow
+NSNumber* opacity = @56; // Opacity of the drop shadow; 0 is 0% and 100 is 100%
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Add a customizeable drop shadow to an image
+[apiInstance editDropShadowWithX:X
+              Y:Y
+              sigma:sigma
+              opacity:opacity
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editDropShadow: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **X** | **NSNumber***| Horizontal (X) offset of the drop shadow | 
+ **Y** | **NSNumber***| Vertical (Y) offset of the drop shadow | 
+ **sigma** | **NSNumber***| Sigma (blur distance) of the drop shadow | 
+ **opacity** | **NSNumber***| Opacity of the drop shadow; 0 is 0% and 100 is 100% | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editInvert**
+```objc
+-(NSURLSessionTask*) editInvertWithImageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Invert, negate the colors in the image
+
+Inverts (negates) all of the colors in the image.  If the image contains transparency, the transparency will first be removed prior to inverting the image.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Invert, negate the colors in the image
+[apiInstance editInvertWithImageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editInvert: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editRemoveExifData**
+```objc
+-(NSURLSessionTask*) editRemoveExifDataWithImageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Remove EXIF data from the image
+
+Removes any EXIF data and profiles .
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Remove EXIF data from the image
+[apiInstance editRemoveExifDataWithImageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editRemoveExifData: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editRemoveTransparency**
+```objc
+-(NSURLSessionTask*) editRemoveTransparencyWithImageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Remove transparency from the image
+
+Removes any active transparency in the image.  Effectively renders the image at the same resolution, in the same file format, over a white background, thus removing transparency.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Remove transparency from the image
+[apiInstance editRemoveTransparencyWithImageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editRemoveTransparency: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

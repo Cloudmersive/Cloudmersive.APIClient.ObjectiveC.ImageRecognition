@@ -1,23 +1,18 @@
-#import "CMFaceApi.h"
+#import "CMFilterApi.h"
 #import "CMQueryParamCollection.h"
 #import "CMApiClient.h"
-#import "CMAgeDetectionResult.h"
-#import "CMFaceCompareResponse.h"
-#import "CMFaceLocateResponse.h"
-#import "CMFaceLocateWithLandmarksResponse.h"
-#import "CMGenderDetectionResult.h"
 
 
-@interface CMFaceApi ()
+@interface CMFilterApi ()
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary *mutableDefaultHeaders;
 
 @end
 
-@implementation CMFaceApi
+@implementation CMFilterApi
 
-NSString* kCMFaceApiErrorDomain = @"CMFaceApiErrorDomain";
-NSInteger kCMFaceApiMissingParamErrorCode = 234513;
+NSString* kCMFilterApiErrorDomain = @"CMFilterApiErrorDomain";
+NSInteger kCMFilterApiMissingParamErrorCode = 234513;
 
 @synthesize apiClient = _apiClient;
 
@@ -54,107 +49,26 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 #pragma mark - Api Methods
 
 ///
-/// Compare and match faces
-/// Find the faces in an input image, and compare against a reference image to determine if there is a match against the face in the reference image.  The reference image (second parameter) should contain exactly one face.
-///  @param inputImage Image file to perform the operation on; this image can contain one or more faces which will be matched against face provided in the second image.  Common file formats such as PNG, JPEG are supported. 
-///
-///  @param matchFace Image of a single face to compare and match against. 
-///
-///  @returns CMFaceCompareResponse*
-///
--(NSURLSessionTask*) faceCompareWithInputImage: (NSURL*) inputImage
-    matchFace: (NSURL*) matchFace
-    completionHandler: (void (^)(CMFaceCompareResponse* output, NSError* error)) handler {
-    // verify the required parameter 'inputImage' is set
-    if (inputImage == nil) {
-        NSParameterAssert(inputImage);
-        if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"inputImage"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
-            handler(nil, error);
-        }
-        return nil;
-    }
-
-    // verify the required parameter 'matchFace' is set
-    if (matchFace == nil) {
-        NSParameterAssert(matchFace);
-        if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"matchFace"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
-            handler(nil, error);
-        }
-        return nil;
-    }
-
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/compare-and-match"];
-
-    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
-
-    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
-    [headerParams addEntriesFromDictionary:self.defaultHeaders];
-    // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
-    if(acceptHeader.length > 0) {
-        headerParams[@"Accept"] = acceptHeader;
-    }
-
-    // response content type
-    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
-
-    // request content type
-    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
-
-    // Authentication setting
-    NSArray *authSettings = @[@"Apikey"];
-
-    id bodyParam = nil;
-    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
-    localVarFiles[@"inputImage"] = inputImage;
-    localVarFiles[@"matchFace"] = matchFace;
-
-    return [self.apiClient requestWithPath: resourcePath
-                                    method: @"POST"
-                                pathParams: pathParams
-                               queryParams: queryParams
-                                formParams: formParams
-                                     files: localVarFiles
-                                      body: bodyParam
-                              headerParams: headerParams
-                              authSettings: authSettings
-                        requestContentType: requestContentType
-                       responseContentType: responseContentType
-                              responseType: @"CMFaceCompareResponse*"
-                           completionBlock: ^(id data, NSError *error) {
-                                if(handler) {
-                                    handler((CMFaceCompareResponse*)data, error);
-                                }
-                            }];
-}
-
-///
-/// Crop image to face with square crop
-/// Crop an image to the face (rectangular crop).  If there is more than one face present, choose the first one.
+/// Convert image to black-and-white grayscale
+/// Remove color from the image by converting to a grayscale, black-and-white image
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
 ///  @returns NSData*
 ///
--(NSURLSessionTask*) faceCropFirstWithImageFile: (NSURL*) imageFile
+-(NSURLSessionTask*) filterBlackAndWhiteWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/crop/first"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/black-and-white"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -201,26 +115,26 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 }
 
 ///
-/// Crop image to face with round crop
-/// Crop an image to the face (circular/round crop).  If there is more than one face present, choose the first one.
+/// Despeckle to remove point noise from the image
+/// Remove point noise / despeckle the input image
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
 ///  @returns NSData*
 ///
--(NSURLSessionTask*) faceCropFirstRoundWithImageFile: (NSURL*) imageFile
+-(NSURLSessionTask*) filterDespeckleWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/crop/first/round"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/despeckle"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -267,34 +181,51 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 }
 
 ///
-/// Detect the age of people in an image
-/// Identify the age, position, and size of human faces in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
+/// Detect and highlight edges in an image
+/// Perform an edge detection operation on the input image
+///  @param radius Radius in pixels of the edge detection operation; a larger radius will produce a greater effect 
+///
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMAgeDetectionResult*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceDetectAgeWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMAgeDetectionResult* output, NSError* error)) handler {
-    // verify the required parameter 'imageFile' is set
-    if (imageFile == nil) {
-        NSParameterAssert(imageFile);
+-(NSURLSessionTask*) filterEdgeDetectWithRadius: (NSNumber*) radius
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'radius' is set
+    if (radius == nil) {
+        NSParameterAssert(radius);
         if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"radius"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/detect-age"];
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/edge-detect/{radius}"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+    if (radius != nil) {
+        pathParams[@"radius"] = radius;
+    }
 
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -324,43 +255,77 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMAgeDetectionResult*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMAgeDetectionResult*)data, error);
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }
 
 ///
-/// Detect the gender of people in an image
-/// Identify the gender, position, and size of human faces in an image, along with a recognition confidence level.  People in the image should be facing the camera.
+/// Emboss an image
+/// Perform an emboss operation on the input image
+///  @param radius Radius in pixels of the emboss operation; a larger radius will produce a greater effect 
+///
+///  @param sigma Sigma, or variance, of the emboss operation 
+///
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMGenderDetectionResult*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceDetectGenderWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMGenderDetectionResult* output, NSError* error)) handler {
-    // verify the required parameter 'imageFile' is set
-    if (imageFile == nil) {
-        NSParameterAssert(imageFile);
+-(NSURLSessionTask*) filterEmbossWithRadius: (NSNumber*) radius
+    sigma: (NSNumber*) sigma
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'radius' is set
+    if (radius == nil) {
+        NSParameterAssert(radius);
         if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"radius"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/detect-gender"];
+    // verify the required parameter 'sigma' is set
+    if (sigma == nil) {
+        NSParameterAssert(sigma);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"sigma"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/emboss/{radius}/{sigma}"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+    if (radius != nil) {
+        pathParams[@"radius"] = radius;
+    }
+    if (sigma != nil) {
+        pathParams[@"sigma"] = sigma;
+    }
 
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -390,43 +355,77 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMGenderDetectionResult*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMGenderDetectionResult*)data, error);
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }
 
 ///
-/// Detect and find faces in an image
-/// Locate the positions of all faces in an image
+/// Perform a guassian blur on the input image
+/// Perform a gaussian blur on the input image
+///  @param radius Radius in pixels of the blur operation; a larger radius will produce a greater blur effect 
+///
+///  @param sigma Sigma, or variance, of the gaussian blur operation 
+///
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMFaceLocateResponse*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceLocateWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMFaceLocateResponse* output, NSError* error)) handler {
-    // verify the required parameter 'imageFile' is set
-    if (imageFile == nil) {
-        NSParameterAssert(imageFile);
+-(NSURLSessionTask*) filterGaussianBlurWithRadius: (NSNumber*) radius
+    sigma: (NSNumber*) sigma
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'radius' is set
+    if (radius == nil) {
+        NSParameterAssert(radius);
         if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"radius"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/locate"];
+    // verify the required parameter 'sigma' is set
+    if (sigma == nil) {
+        NSParameterAssert(sigma);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"sigma"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/blur/guassian/{radius}/{sigma}"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+    if (radius != nil) {
+        pathParams[@"radius"] = radius;
+    }
+    if (sigma != nil) {
+        pathParams[@"sigma"] = sigma;
+    }
 
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -456,43 +455,94 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMFaceLocateResponse*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMFaceLocateResponse*)data, error);
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }
 
 ///
-/// Detect and find faces and landmarks eyes and nose and mouth in image
-/// Locate the positions of all faces in an image, along with the eyes, eye brows, nose and mouth components of each
+/// Perform a motion blur on the input image
+/// Perform a motion blur on the input image at a specific angle
+///  @param radius Radius in pixels of the blur operation; a larger radius will produce a greater blur effect 
+///
+///  @param sigma Sigma, or variance, of the motion blur operation 
+///
+///  @param angle Angle of the motion blur in degrees 
+///
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMFaceLocateWithLandmarksResponse*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceLocateWithLandmarksWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMFaceLocateWithLandmarksResponse* output, NSError* error)) handler {
-    // verify the required parameter 'imageFile' is set
-    if (imageFile == nil) {
-        NSParameterAssert(imageFile);
+-(NSURLSessionTask*) filterMotionBlurWithRadius: (NSNumber*) radius
+    sigma: (NSNumber*) sigma
+    angle: (NSNumber*) angle
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'radius' is set
+    if (radius == nil) {
+        NSParameterAssert(radius);
         if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"radius"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/locate-with-landmarks"];
+    // verify the required parameter 'sigma' is set
+    if (sigma == nil) {
+        NSParameterAssert(sigma);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"sigma"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'angle' is set
+    if (angle == nil) {
+        NSParameterAssert(angle);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"angle"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/blur/motion/{radius}/{sigma}/{angle}"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+    if (radius != nil) {
+        pathParams[@"radius"] = radius;
+    }
+    if (sigma != nil) {
+        pathParams[@"sigma"] = sigma;
+    }
+    if (angle != nil) {
+        pathParams[@"angle"] = angle;
+    }
 
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -522,10 +572,176 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMFaceLocateWithLandmarksResponse*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMFaceLocateWithLandmarksResponse*)data, error);
+                                    handler((NSData*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Posterize the image by reducing distinct colors
+/// Reduce the unique number of colors in the image to the specified level
+///  @param levels Number of unique colors to retain in the output image 
+///
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @returns NSData*
+///
+-(NSURLSessionTask*) filterPosterizeWithLevels: (NSNumber*) levels
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'levels' is set
+    if (levels == nil) {
+        NSParameterAssert(levels);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"levels"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/posterize"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    if (levels != nil) {
+        queryParams[@"levels"] = levels;
+    }
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"NSData*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((NSData*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Swirl distort the image
+/// Swirl distort the image by the specified number of degrees
+///  @param degrees Degrees of swirl 
+///
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @returns NSData*
+///
+-(NSURLSessionTask*) filterSwirlWithDegrees: (NSNumber*) degrees
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'degrees' is set
+    if (degrees == nil) {
+        NSParameterAssert(degrees);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"degrees"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMFilterApiErrorDomain code:kCMFilterApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/filter/swirl"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    if (degrees != nil) {
+        queryParams[@"degrees"] = degrees;
+    }
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"NSData*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }

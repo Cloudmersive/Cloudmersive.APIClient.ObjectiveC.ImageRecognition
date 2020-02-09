@@ -5,12 +5,12 @@ All URIs are relative to *https://api.cloudmersive.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**faceCompare**](CMFaceApi.md#facecompare) | **POST** /image/face/compare-and-match | Compare and match faces
-[**faceCropFirst**](CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face (square)
-[**faceCropFirstRound**](CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face (round)
+[**faceCropFirst**](CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face with square crop
+[**faceCropFirstRound**](CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face with round crop
 [**faceDetectAge**](CMFaceApi.md#facedetectage) | **POST** /image/face/detect-age | Detect the age of people in an image
 [**faceDetectGender**](CMFaceApi.md#facedetectgender) | **POST** /image/face/detect-gender | Detect the gender of people in an image
-[**faceLocate**](CMFaceApi.md#facelocate) | **POST** /image/face/locate | Find faces in an image
-[**faceLocateWithLandmarks**](CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
+[**faceLocate**](CMFaceApi.md#facelocate) | **POST** /image/face/locate | Detect and find faces in an image
+[**faceLocateWithLandmarks**](CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Detect and find faces and landmarks eyes and nose and mouth in image
 
 
 # **faceCompare**
@@ -80,7 +80,7 @@ Name | Type | Description  | Notes
         completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Crop image to face (square)
+Crop image to face with square crop
 
 Crop an image to the face (rectangular crop).  If there is more than one face present, choose the first one.
 
@@ -98,7 +98,7 @@ NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file t
 
 CMFaceApi*apiInstance = [[CMFaceApi alloc] init];
 
-// Crop image to face (square)
+// Crop image to face with square crop
 [apiInstance faceCropFirstWithImageFile:imageFile
           completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
@@ -137,7 +137,7 @@ Name | Type | Description  | Notes
         completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Crop image to face (round)
+Crop image to face with round crop
 
 Crop an image to the face (circular/round crop).  If there is more than one face present, choose the first one.
 
@@ -155,7 +155,7 @@ NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file t
 
 CMFaceApi*apiInstance = [[CMFaceApi alloc] init];
 
-// Crop image to face (round)
+// Crop image to face with round crop
 [apiInstance faceCropFirstRoundWithImageFile:imageFile
           completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
@@ -308,7 +308,7 @@ Name | Type | Description  | Notes
         completionHandler: (void (^)(CMFaceLocateResponse* output, NSError* error)) handler;
 ```
 
-Find faces in an image
+Detect and find faces in an image
 
 Locate the positions of all faces in an image
 
@@ -326,7 +326,7 @@ NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file t
 
 CMFaceApi*apiInstance = [[CMFaceApi alloc] init];
 
-// Find faces in an image
+// Detect and find faces in an image
 [apiInstance faceLocateWithImageFile:imageFile
           completionHandler: ^(CMFaceLocateResponse* output, NSError* error) {
                         if (output) {
@@ -365,7 +365,7 @@ Name | Type | Description  | Notes
         completionHandler: (void (^)(CMFaceLocateWithLandmarksResponse* output, NSError* error)) handler;
 ```
 
-Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
+Detect and find faces and landmarks eyes and nose and mouth in image
 
 Locate the positions of all faces in an image, along with the eyes, eye brows, nose and mouth components of each
 
@@ -383,7 +383,7 @@ NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file t
 
 CMFaceApi*apiInstance = [[CMFaceApi alloc] init];
 
-// Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
+// Detect and find faces and landmarks eyes and nose and mouth in image
 [apiInstance faceLocateWithLandmarksWithImageFile:imageFile
           completionHandler: ^(CMFaceLocateWithLandmarksResponse* output, NSError* error) {
                         if (output) {

@@ -42,8 +42,10 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMDefaultConfiguration.h>
 // load models
 #import <CloudmersiveImageRecognitionApiClient/CMAgeDetectionResult.h>
+#import <CloudmersiveImageRecognitionApiClient/CMColorResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDetectedLicensePlate.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDetectedObject.h>
+#import <CloudmersiveImageRecognitionApiClient/CMDominantColorResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawPolygonInstance.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawPolygonRequest.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDrawRectangleInstance.h>
@@ -57,10 +59,13 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMFaceMatch.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFacePoint.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFaceWithLandmarks.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFindSymbolResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFineTextDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFineTextItem.h>
 #import <CloudmersiveImageRecognitionApiClient/CMGenderDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMImageDescriptionResponse.h>
+#import <CloudmersiveImageRecognitionApiClient/CMImageMetadata.h>
+#import <CloudmersiveImageRecognitionApiClient/CMImageMetadataExifValue.h>
 #import <CloudmersiveImageRecognitionApiClient/CMNsfwResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMObjectDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMPersonWithAge.h>
@@ -72,8 +77,11 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMVehicleLicensePlateDetectionResult.h>
 // load API classes for accessing endpoints
 #import <CloudmersiveImageRecognitionApiClient/CMArtisticApi.h>
+#import <CloudmersiveImageRecognitionApiClient/CMConvertApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMEditApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMFaceApi.h>
+#import <CloudmersiveImageRecognitionApiClient/CMFilterApi.h>
+#import <CloudmersiveImageRecognitionApiClient/CMInfoApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMNsfwApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMRecognizeApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMResizeApi.h>
@@ -124,36 +132,62 @@ All URIs are relative to *https://api.cloudmersive.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CMArtisticApi* | [**artisticPainting**](docs/CMArtisticApi.md#artisticpainting) | **POST** /image/artistic/painting/{style} | Transform an image into an artistic painting automatically
+*CMConvertApi* | [**convertToBmp**](docs/CMConvertApi.md#converttobmp) | **POST** /image/convert/to/bmp | Convert input image to Bitmap BMP format
+*CMConvertApi* | [**convertToGif**](docs/CMConvertApi.md#converttogif) | **POST** /image/convert/to/gif | Convert input image to GIF format
+*CMConvertApi* | [**convertToJpg**](docs/CMConvertApi.md#converttojpg) | **POST** /image/convert/to/jpg/{quality} | Convert input image to JPG, JPEG format
+*CMConvertApi* | [**convertToPhotoshop**](docs/CMConvertApi.md#converttophotoshop) | **POST** /image/convert/to/psd | Convert input image to Photoshop PSD format
+*CMConvertApi* | [**convertToPng**](docs/CMConvertApi.md#converttopng) | **POST** /image/convert/to/png | Convert input image to PNG format
+*CMConvertApi* | [**convertToTiff**](docs/CMConvertApi.md#converttotiff) | **POST** /image/convert/to/tiff | Convert input image to TIFF format
+*CMConvertApi* | [**convertToWebP**](docs/CMConvertApi.md#converttowebp) | **POST** /image/convert/to/webp | Convert input image to WebP format
 *CMEditApi* | [**editAutoOrient**](docs/CMEditApi.md#editautoorient) | **POST** /image/edit/auto-orient/remove-exif | Normalizes image rotation and removes EXIF rotation data
 *CMEditApi* | [**editCompositeBasic**](docs/CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
 *CMEditApi* | [**editContrastAdaptive**](docs/CMEditApi.md#editcontrastadaptive) | **POST** /image/edit/contrast/{gamma}/adaptive | Adaptively adjust the contrast of the image to be more appealing and easy to see
+*CMEditApi* | [**editCropRectangle**](docs/CMEditApi.md#editcroprectangle) | **POST** /image/edit/crop/rectangle/{left}/{top}/{width}/{height} | Crop an image to a rectangular area
 *CMEditApi* | [**editDrawPolygon**](docs/CMEditApi.md#editdrawpolygon) | **POST** /image/edit/draw/polygon | Draw a polygon onto an image
 *CMEditApi* | [**editDrawRectangle**](docs/CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw a rectangle onto an image
 *CMEditApi* | [**editDrawText**](docs/CMEditApi.md#editdrawtext) | **POST** /image/edit/draw/text | Draw text onto an image
+*CMEditApi* | [**editDropShadow**](docs/CMEditApi.md#editdropshadow) | **POST** /image/edit/drop-shadow/{X}/{Y}/{sigma}/{opacity} | Add a customizeable drop shadow to an image
+*CMEditApi* | [**editInvert**](docs/CMEditApi.md#editinvert) | **POST** /image/edit/invert | Invert, negate the colors in the image
+*CMEditApi* | [**editRemoveExifData**](docs/CMEditApi.md#editremoveexifdata) | **POST** /image/edit/remove-exif | Remove EXIF data from the image
+*CMEditApi* | [**editRemoveTransparency**](docs/CMEditApi.md#editremovetransparency) | **POST** /image/edit/remove-transparency | Remove transparency from the image
 *CMEditApi* | [**editRotate**](docs/CMEditApi.md#editrotate) | **POST** /image/edit/rotate/{degrees}/angle | Rotate an image any number of degrees
 *CMFaceApi* | [**faceCompare**](docs/CMFaceApi.md#facecompare) | **POST** /image/face/compare-and-match | Compare and match faces
-*CMFaceApi* | [**faceCropFirst**](docs/CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face (square)
-*CMFaceApi* | [**faceCropFirstRound**](docs/CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face (round)
+*CMFaceApi* | [**faceCropFirst**](docs/CMFaceApi.md#facecropfirst) | **POST** /image/face/crop/first | Crop image to face with square crop
+*CMFaceApi* | [**faceCropFirstRound**](docs/CMFaceApi.md#facecropfirstround) | **POST** /image/face/crop/first/round | Crop image to face with round crop
 *CMFaceApi* | [**faceDetectAge**](docs/CMFaceApi.md#facedetectage) | **POST** /image/face/detect-age | Detect the age of people in an image
 *CMFaceApi* | [**faceDetectGender**](docs/CMFaceApi.md#facedetectgender) | **POST** /image/face/detect-gender | Detect the gender of people in an image
-*CMFaceApi* | [**faceLocate**](docs/CMFaceApi.md#facelocate) | **POST** /image/face/locate | Find faces in an image
-*CMFaceApi* | [**faceLocateWithLandmarks**](docs/CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Find faces and face landmarks (eyes, eye brows, nose, mouth) in an image
-*CMNsfwApi* | [**nsfwClassify**](docs/CMNsfwApi.md#nsfwclassify) | **POST** /image/nsfw/classify | Not safe for work (NSFW) racy content classification
+*CMFaceApi* | [**faceLocate**](docs/CMFaceApi.md#facelocate) | **POST** /image/face/locate | Detect and find faces in an image
+*CMFaceApi* | [**faceLocateWithLandmarks**](docs/CMFaceApi.md#facelocatewithlandmarks) | **POST** /image/face/locate-with-landmarks | Detect and find faces and landmarks eyes and nose and mouth in image
+*CMFilterApi* | [**filterBlackAndWhite**](docs/CMFilterApi.md#filterblackandwhite) | **POST** /image/filter/black-and-white | Convert image to black-and-white grayscale
+*CMFilterApi* | [**filterDespeckle**](docs/CMFilterApi.md#filterdespeckle) | **POST** /image/filter/despeckle | Despeckle to remove point noise from the image
+*CMFilterApi* | [**filterEdgeDetect**](docs/CMFilterApi.md#filteredgedetect) | **POST** /image/filter/edge-detect/{radius} | Detect and highlight edges in an image
+*CMFilterApi* | [**filterEmboss**](docs/CMFilterApi.md#filteremboss) | **POST** /image/filter/emboss/{radius}/{sigma} | Emboss an image
+*CMFilterApi* | [**filterGaussianBlur**](docs/CMFilterApi.md#filtergaussianblur) | **POST** /image/filter/blur/guassian/{radius}/{sigma} | Perform a guassian blur on the input image
+*CMFilterApi* | [**filterMotionBlur**](docs/CMFilterApi.md#filtermotionblur) | **POST** /image/filter/blur/motion/{radius}/{sigma}/{angle} | Perform a motion blur on the input image
+*CMFilterApi* | [**filterPosterize**](docs/CMFilterApi.md#filterposterize) | **POST** /image/filter/posterize | Posterize the image by reducing distinct colors
+*CMFilterApi* | [**filterSwirl**](docs/CMFilterApi.md#filterswirl) | **POST** /image/filter/swirl | Swirl distort the image
+*CMInfoApi* | [**infoGetDominantColor**](docs/CMInfoApi.md#infogetdominantcolor) | **POST** /image/get-info/dominant-color | Returns the dominant colors of the image
+*CMInfoApi* | [**infoGetMetadata**](docs/CMInfoApi.md#infogetmetadata) | **POST** /image/get-info/metadata | Returns the image metadata including EXIF and resolution
+*CMNsfwApi* | [**nsfwClassify**](docs/CMNsfwApi.md#nsfwclassify) | **POST** /image/nsfw/classify | Not safe for work NSFW racy content classification
 *CMRecognizeApi* | [**recognizeDescribe**](docs/CMRecognizeApi.md#recognizedescribe) | **POST** /image/recognize/describe | Describe an image in natural language
 *CMRecognizeApi* | [**recognizeDetectAndUnskewDocument**](docs/CMRecognizeApi.md#recognizedetectandunskewdocument) | **POST** /image/recognize/detect-document/unskew | Detect and unskew a photo of a document
-*CMRecognizeApi* | [**recognizeDetectObjects**](docs/CMRecognizeApi.md#recognizedetectobjects) | **POST** /image/recognize/detect-objects | Detect objects, including types and locations, in an image
-*CMRecognizeApi* | [**recognizeDetectPeople**](docs/CMRecognizeApi.md#recognizedetectpeople) | **POST** /image/recognize/detect-people | Detect people, including locations, in an image
+*CMRecognizeApi* | [**recognizeDetectObjects**](docs/CMRecognizeApi.md#recognizedetectobjects) | **POST** /image/recognize/detect-objects | Detect objects including types and locations in an image
+*CMRecognizeApi* | [**recognizeDetectPeople**](docs/CMRecognizeApi.md#recognizedetectpeople) | **POST** /image/recognize/detect-people | Detect people including locations in an image
 *CMRecognizeApi* | [**recognizeDetectTextFine**](docs/CMRecognizeApi.md#recognizedetecttextfine) | **POST** /image/recognize/detect-text/fine | Detect fine text in a photo of a document
 *CMRecognizeApi* | [**recognizeDetectTextLarge**](docs/CMRecognizeApi.md#recognizedetecttextlarge) | **POST** /image/recognize/detect-text/large | Detect large text in a photo
 *CMRecognizeApi* | [**recognizeDetectVehicleLicensePlates**](docs/CMRecognizeApi.md#recognizedetectvehiclelicenseplates) | **POST** /image/recognize/detect-vehicle-license-plates | Detect vehicle license plates in an image
-*CMResizeApi* | [**resizePost**](docs/CMResizeApi.md#resizepost) | **POST** /image/resize/preserveAspectRatio/{maxWidth}/{maxHeight} | Resize an image with parameters
+*CMRecognizeApi* | [**recognizeFindSymbol**](docs/CMRecognizeApi.md#recognizefindsymbol) | **POST** /image/recognize/find/symbol | Find the location of a symbol in an image
+*CMResizeApi* | [**resizePost**](docs/CMResizeApi.md#resizepost) | **POST** /image/resize/preserveAspectRatio/{maxWidth}/{maxHeight} | Resize an image while preserving aspect ratio
+*CMResizeApi* | [**resizeResizeSimple**](docs/CMResizeApi.md#resizeresizesimple) | **POST** /image/resize/target/{width}/{height} | Resize an image
 
 
 ## Documentation For Models
 
  - [CMAgeDetectionResult](docs/CMAgeDetectionResult.md)
+ - [CMColorResult](docs/CMColorResult.md)
  - [CMDetectedLicensePlate](docs/CMDetectedLicensePlate.md)
  - [CMDetectedObject](docs/CMDetectedObject.md)
+ - [CMDominantColorResult](docs/CMDominantColorResult.md)
  - [CMDrawPolygonInstance](docs/CMDrawPolygonInstance.md)
  - [CMDrawPolygonRequest](docs/CMDrawPolygonRequest.md)
  - [CMDrawRectangleInstance](docs/CMDrawRectangleInstance.md)
@@ -167,10 +201,13 @@ Class | Method | HTTP request | Description
  - [CMFaceMatch](docs/CMFaceMatch.md)
  - [CMFacePoint](docs/CMFacePoint.md)
  - [CMFaceWithLandmarks](docs/CMFaceWithLandmarks.md)
+ - [CMFindSymbolResult](docs/CMFindSymbolResult.md)
  - [CMFineTextDetectionResult](docs/CMFineTextDetectionResult.md)
  - [CMFineTextItem](docs/CMFineTextItem.md)
  - [CMGenderDetectionResult](docs/CMGenderDetectionResult.md)
  - [CMImageDescriptionResponse](docs/CMImageDescriptionResponse.md)
+ - [CMImageMetadata](docs/CMImageMetadata.md)
+ - [CMImageMetadataExifValue](docs/CMImageMetadataExifValue.md)
  - [CMNsfwResult](docs/CMNsfwResult.md)
  - [CMObjectDetectionResult](docs/CMObjectDetectionResult.md)
  - [CMPersonWithAge](docs/CMPersonWithAge.md)

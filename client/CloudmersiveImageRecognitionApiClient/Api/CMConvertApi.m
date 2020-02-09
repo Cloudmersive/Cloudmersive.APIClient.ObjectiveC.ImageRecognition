@@ -1,23 +1,18 @@
-#import "CMFaceApi.h"
+#import "CMConvertApi.h"
 #import "CMQueryParamCollection.h"
 #import "CMApiClient.h"
-#import "CMAgeDetectionResult.h"
-#import "CMFaceCompareResponse.h"
-#import "CMFaceLocateResponse.h"
-#import "CMFaceLocateWithLandmarksResponse.h"
-#import "CMGenderDetectionResult.h"
 
 
-@interface CMFaceApi ()
+@interface CMConvertApi ()
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary *mutableDefaultHeaders;
 
 @end
 
-@implementation CMFaceApi
+@implementation CMConvertApi
 
-NSString* kCMFaceApiErrorDomain = @"CMFaceApiErrorDomain";
-NSInteger kCMFaceApiMissingParamErrorCode = 234513;
+NSString* kCMConvertApiErrorDomain = @"CMConvertApiErrorDomain";
+NSInteger kCMConvertApiMissingParamErrorCode = 234513;
 
 @synthesize apiClient = _apiClient;
 
@@ -54,107 +49,26 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 #pragma mark - Api Methods
 
 ///
-/// Compare and match faces
-/// Find the faces in an input image, and compare against a reference image to determine if there is a match against the face in the reference image.  The reference image (second parameter) should contain exactly one face.
-///  @param inputImage Image file to perform the operation on; this image can contain one or more faces which will be matched against face provided in the second image.  Common file formats such as PNG, JPEG are supported. 
-///
-///  @param matchFace Image of a single face to compare and match against. 
-///
-///  @returns CMFaceCompareResponse*
-///
--(NSURLSessionTask*) faceCompareWithInputImage: (NSURL*) inputImage
-    matchFace: (NSURL*) matchFace
-    completionHandler: (void (^)(CMFaceCompareResponse* output, NSError* error)) handler {
-    // verify the required parameter 'inputImage' is set
-    if (inputImage == nil) {
-        NSParameterAssert(inputImage);
-        if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"inputImage"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
-            handler(nil, error);
-        }
-        return nil;
-    }
-
-    // verify the required parameter 'matchFace' is set
-    if (matchFace == nil) {
-        NSParameterAssert(matchFace);
-        if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"matchFace"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
-            handler(nil, error);
-        }
-        return nil;
-    }
-
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/compare-and-match"];
-
-    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
-
-    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
-    [headerParams addEntriesFromDictionary:self.defaultHeaders];
-    // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
-    if(acceptHeader.length > 0) {
-        headerParams[@"Accept"] = acceptHeader;
-    }
-
-    // response content type
-    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
-
-    // request content type
-    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
-
-    // Authentication setting
-    NSArray *authSettings = @[@"Apikey"];
-
-    id bodyParam = nil;
-    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
-    localVarFiles[@"inputImage"] = inputImage;
-    localVarFiles[@"matchFace"] = matchFace;
-
-    return [self.apiClient requestWithPath: resourcePath
-                                    method: @"POST"
-                                pathParams: pathParams
-                               queryParams: queryParams
-                                formParams: formParams
-                                     files: localVarFiles
-                                      body: bodyParam
-                              headerParams: headerParams
-                              authSettings: authSettings
-                        requestContentType: requestContentType
-                       responseContentType: responseContentType
-                              responseType: @"CMFaceCompareResponse*"
-                           completionBlock: ^(id data, NSError *error) {
-                                if(handler) {
-                                    handler((CMFaceCompareResponse*)data, error);
-                                }
-                            }];
-}
-
-///
-/// Crop image to face with square crop
-/// Crop an image to the face (rectangular crop).  If there is more than one face present, choose the first one.
+/// Convert input image to Bitmap BMP format
+/// Converts the input image into PSD format.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
 ///  @returns NSData*
 ///
--(NSURLSessionTask*) faceCropFirstWithImageFile: (NSURL*) imageFile
+-(NSURLSessionTask*) convertToBmpWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/crop/first"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/bmp"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -201,26 +115,26 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 }
 
 ///
-/// Crop image to face with round crop
-/// Crop an image to the face (circular/round crop).  If there is more than one face present, choose the first one.
+/// Convert input image to GIF format
+/// Converts the input image into GIF format.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
 ///  @returns NSData*
 ///
--(NSURLSessionTask*) faceCropFirstRoundWithImageFile: (NSURL*) imageFile
+-(NSURLSessionTask*) convertToGifWithImageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/crop/first/round"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/gif"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -267,34 +181,51 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 }
 
 ///
-/// Detect the age of people in an image
-/// Identify the age, position, and size of human faces in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
+/// Convert input image to JPG, JPEG format
+/// Converts the input image into JPEG/JPG format.  Customize encoding parameters.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
+///  @param quality Set the JPEG quality level; lowest quality is 1 (highest compression), highest quality (lowest compression) is 100; recommended value is 75 
+///
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMAgeDetectionResult*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceDetectAgeWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMAgeDetectionResult* output, NSError* error)) handler {
-    // verify the required parameter 'imageFile' is set
-    if (imageFile == nil) {
-        NSParameterAssert(imageFile);
+-(NSURLSessionTask*) convertToJpgWithQuality: (NSNumber*) quality
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'quality' is set
+    if (quality == nil) {
+        NSParameterAssert(quality);
         if(handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"quality"] };
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/detect-age"];
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/jpg/{quality}"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+    if (quality != nil) {
+        pathParams[@"quality"] = quality;
+    }
 
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -324,35 +255,35 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMAgeDetectionResult*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMAgeDetectionResult*)data, error);
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }
 
 ///
-/// Detect the gender of people in an image
-/// Identify the gender, position, and size of human faces in an image, along with a recognition confidence level.  People in the image should be facing the camera.
+/// Convert input image to Photoshop PSD format
+/// Converts the input image into PSD format.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMGenderDetectionResult*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceDetectGenderWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMGenderDetectionResult* output, NSError* error)) handler {
+-(NSURLSessionTask*) convertToPhotoshopWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/detect-gender"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/psd"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -360,7 +291,7 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -390,35 +321,35 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMGenderDetectionResult*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMGenderDetectionResult*)data, error);
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }
 
 ///
-/// Detect and find faces in an image
-/// Locate the positions of all faces in an image
+/// Convert input image to PNG format
+/// Converts the input image into PNG format.  Transparency is preserved when present.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMFaceLocateResponse*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceLocateWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMFaceLocateResponse* output, NSError* error)) handler {
+-(NSURLSessionTask*) convertToPngWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/locate"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/png"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -426,7 +357,7 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -456,35 +387,35 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMFaceLocateResponse*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMFaceLocateResponse*)data, error);
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }
 
 ///
-/// Detect and find faces and landmarks eyes and nose and mouth in image
-/// Locate the positions of all faces in an image, along with the eyes, eye brows, nose and mouth components of each
+/// Convert input image to TIFF format
+/// Converts the input image into TIFF format.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMFaceLocateWithLandmarksResponse*
+///  @returns NSData*
 ///
--(NSURLSessionTask*) faceLocateWithLandmarksWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMFaceLocateWithLandmarksResponse* output, NSError* error)) handler {
+-(NSURLSessionTask*) convertToTiffWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
         if(handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
-            NSError* error = [NSError errorWithDomain:kCMFaceApiErrorDomain code:kCMFaceApiMissingParamErrorCode userInfo:userInfo];
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
             handler(nil, error);
         }
         return nil;
     }
 
-    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/face/locate-with-landmarks"];
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/tiff"];
 
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
 
@@ -492,7 +423,7 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
     NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
     [headerParams addEntriesFromDictionary:self.defaultHeaders];
     // HTTP header `Accept`
-    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/json", @"text/json", @"application/xml", @"text/xml"]];
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
     if(acceptHeader.length > 0) {
         headerParams[@"Accept"] = acceptHeader;
     }
@@ -522,10 +453,76 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMFaceLocateWithLandmarksResponse*"
+                              responseType: @"NSData*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMFaceLocateWithLandmarksResponse*)data, error);
+                                    handler((NSData*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Convert input image to WebP format
+/// Converts the input image into WebP format.  Supported input file formats include AAI, ART, ARW, AVS, BPG, BMP, BMP2, BMP3, BRF, CALS, CGM, CIN, CMYK, CMYKA, CR2, CRW, CUR, CUT, DCM, DCR, DCX, DDS, DIB, DJVU, DNG, DOT, DPX, EMF, EPDF, EPI, EPS, EPS2, EPS3, EPSF, EPSI, EPT, EXR, FAX, FIG, FITS, FPX, GIF, GPLT, GRAY, HDR, HEIC, HPGL, HRZ, ICO, ISOBRL, ISBRL6, JBIG, JNG, JP2, JPT, J2C, J2K, JPEG/JPG, JXR, MAT, MONO, MNG, M2V, MRW, MTV, NEF, ORF, OTB, P7, PALM, PAM, PBM, PCD, PCDS, PCL, PCX, PDF, PEF, PES, PFA, PFB, PFM, PGM, PICON, PICT, PIX, PNG, PNG8, PNG00, PNG24, PNG32, PNG48, PNG64, PNM, PPM, PSB, PSD, PTIF, PWB, RAD, RAF, RGB, RGBA, RGF, RLA, RLE, SCT, SFW, SGI, SID, SUN, SVG, TGA, TIFF, TIM, UIL, VIFF, VICAR, VBMP, WDP, WEBP, WPG, X, XBM, XCF, XPM, XWD, X3F, YCbCr, YCbCrA, YUV.
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @returns NSData*
+///
+-(NSURLSessionTask*) convertToWebPWithImageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMConvertApiErrorDomain code:kCMConvertApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/convert/to/webp"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"NSData*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((NSData*)data, error);
                                 }
                             }];
 }

@@ -1,86 +1,28 @@
-# CMRecognizeApi
+# CMFilterApi
 
 All URIs are relative to *https://api.cloudmersive.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**recognizeDescribe**](CMRecognizeApi.md#recognizedescribe) | **POST** /image/recognize/describe | Describe an image in natural language
-[**recognizeDetectAndUnskewDocument**](CMRecognizeApi.md#recognizedetectandunskewdocument) | **POST** /image/recognize/detect-document/unskew | Detect and unskew a photo of a document
-[**recognizeDetectObjects**](CMRecognizeApi.md#recognizedetectobjects) | **POST** /image/recognize/detect-objects | Detect objects including types and locations in an image
-[**recognizeDetectPeople**](CMRecognizeApi.md#recognizedetectpeople) | **POST** /image/recognize/detect-people | Detect people including locations in an image
-[**recognizeDetectTextFine**](CMRecognizeApi.md#recognizedetecttextfine) | **POST** /image/recognize/detect-text/fine | Detect fine text in a photo of a document
-[**recognizeDetectTextLarge**](CMRecognizeApi.md#recognizedetecttextlarge) | **POST** /image/recognize/detect-text/large | Detect large text in a photo
-[**recognizeDetectVehicleLicensePlates**](CMRecognizeApi.md#recognizedetectvehiclelicenseplates) | **POST** /image/recognize/detect-vehicle-license-plates | Detect vehicle license plates in an image
-[**recognizeFindSymbol**](CMRecognizeApi.md#recognizefindsymbol) | **POST** /image/recognize/find/symbol | Find the location of a symbol in an image
+[**filterBlackAndWhite**](CMFilterApi.md#filterblackandwhite) | **POST** /image/filter/black-and-white | Convert image to black-and-white grayscale
+[**filterDespeckle**](CMFilterApi.md#filterdespeckle) | **POST** /image/filter/despeckle | Despeckle to remove point noise from the image
+[**filterEdgeDetect**](CMFilterApi.md#filteredgedetect) | **POST** /image/filter/edge-detect/{radius} | Detect and highlight edges in an image
+[**filterEmboss**](CMFilterApi.md#filteremboss) | **POST** /image/filter/emboss/{radius}/{sigma} | Emboss an image
+[**filterGaussianBlur**](CMFilterApi.md#filtergaussianblur) | **POST** /image/filter/blur/guassian/{radius}/{sigma} | Perform a guassian blur on the input image
+[**filterMotionBlur**](CMFilterApi.md#filtermotionblur) | **POST** /image/filter/blur/motion/{radius}/{sigma}/{angle} | Perform a motion blur on the input image
+[**filterPosterize**](CMFilterApi.md#filterposterize) | **POST** /image/filter/posterize | Posterize the image by reducing distinct colors
+[**filterSwirl**](CMFilterApi.md#filterswirl) | **POST** /image/filter/swirl | Swirl distort the image
 
 
-# **recognizeDescribe**
+# **filterBlackAndWhite**
 ```objc
--(NSURLSessionTask*) recognizeDescribeWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMImageDescriptionResponse* output, NSError* error)) handler;
-```
-
-Describe an image in natural language
-
-Generate an English language text description of the image as a sentence.
-
-### Example 
-```objc
-CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
-
-// Configure API key authorization: (authentication scheme: Apikey)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
-
-
-NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
-
-// Describe an image in natural language
-[apiInstance recognizeDescribeWithImageFile:imageFile
-          completionHandler: ^(CMImageDescriptionResponse* output, NSError* error) {
-                        if (output) {
-                            NSLog(@"%@", output);
-                        }
-                        if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDescribe: %@", error);
-                        }
-                    }];
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
-
-### Return type
-
-[**CMImageDescriptionResponse***](CMImageDescriptionResponse.md)
-
-### Authorization
-
-[Apikey](../README.md#Apikey)
-
-### HTTP request headers
-
- - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **recognizeDetectAndUnskewDocument**
-```objc
--(NSURLSessionTask*) recognizeDetectAndUnskewDocumentWithImageFile: (NSURL*) imageFile
-    postProcessingEffect: (NSString*) postProcessingEffect
+-(NSURLSessionTask*) filterBlackAndWhiteWithImageFile: (NSURL*) imageFile
         completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Detect and unskew a photo of a document
+Convert image to black-and-white grayscale
 
-Detect and unskew a photo of a document (e.g. taken on a cell phone) into a perfectly square image.  Great for document scanning applications; once unskewed, this image is perfect for converting to PDF using the Convert API or optical character recognition using the OCR API.
+Remove color from the image by converting to a grayscale, black-and-white image
 
 ### Example 
 ```objc
@@ -93,19 +35,17 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 
 
 NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-NSString* postProcessingEffect = @"postProcessingEffect_example"; // Optional, post-processing effects to apply to the email, default is None.  Possible values are None and BlackAndWhite (force the image into a black and white view to aid in OCR operations). (optional)
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Detect and unskew a photo of a document
-[apiInstance recognizeDetectAndUnskewDocumentWithImageFile:imageFile
-              postProcessingEffect:postProcessingEffect
+// Convert image to black-and-white grayscale
+[apiInstance filterBlackAndWhiteWithImageFile:imageFile
           completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectAndUnskewDocument: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterBlackAndWhite: %@", error);
                         }
                     }];
 ```
@@ -115,7 +55,6 @@ CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
- **postProcessingEffect** | **NSString***| Optional, post-processing effects to apply to the email, default is None.  Possible values are None and BlackAndWhite (force the image into a black and white view to aid in OCR operations). | [optional] 
 
 ### Return type
 
@@ -128,19 +67,19 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **recognizeDetectObjects**
+# **filterDespeckle**
 ```objc
--(NSURLSessionTask*) recognizeDetectObjectsWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) filterDespeckleWithImageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Detect objects including types and locations in an image
+Despeckle to remove point noise from the image
 
-Identify the position, size and description of objects in an image, along with a recognition confidence level.  Detects both human people and objects in an image.
+Remove point noise / despeckle the input image
 
 ### Example 
 ```objc
@@ -154,16 +93,16 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 
 NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Detect objects including types and locations in an image
-[apiInstance recognizeDetectObjectsWithImageFile:imageFile
-          completionHandler: ^(CMObjectDetectionResult* output, NSError* error) {
+// Despeckle to remove point noise from the image
+[apiInstance filterDespeckleWithImageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectObjects: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterDespeckle: %@", error);
                         }
                     }];
 ```
@@ -176,7 +115,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CMObjectDetectionResult***](CMObjectDetectionResult.md)
+**NSData***
 
 ### Authorization
 
@@ -185,19 +124,20 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **recognizeDetectPeople**
+# **filterEdgeDetect**
 ```objc
--(NSURLSessionTask*) recognizeDetectPeopleWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) filterEdgeDetectWithRadius: (NSNumber*) radius
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Detect people including locations in an image
+Detect and highlight edges in an image
 
-Identify the position, and size of human people in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
+Perform an edge detection operation on the input image
 
 ### Example 
 ```objc
@@ -209,18 +149,20 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
+NSNumber* radius = @56; // Radius in pixels of the edge detection operation; a larger radius will produce a greater effect
 NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Detect people including locations in an image
-[apiInstance recognizeDetectPeopleWithImageFile:imageFile
-          completionHandler: ^(CMObjectDetectionResult* output, NSError* error) {
+// Detect and highlight edges in an image
+[apiInstance filterEdgeDetectWithRadius:radius
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectPeople: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterEdgeDetect: %@", error);
                         }
                     }];
 ```
@@ -229,11 +171,12 @@ CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **radius** | **NSNumber***| Radius in pixels of the edge detection operation; a larger radius will produce a greater effect | 
  **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
 
 ### Return type
 
-[**CMObjectDetectionResult***](CMObjectDetectionResult.md)
+**NSData***
 
 ### Authorization
 
@@ -242,19 +185,21 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **recognizeDetectTextFine**
+# **filterEmboss**
 ```objc
--(NSURLSessionTask*) recognizeDetectTextFineWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMFineTextDetectionResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) filterEmbossWithRadius: (NSNumber*) radius
+    sigma: (NSNumber*) sigma
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Detect fine text in a photo of a document
+Emboss an image
 
-Identify the position, and size of small/fine text within a photograph of a document.  Identify the location of small text in a photo - such as words and other forms of high density text.  Can be used on a scan of a document or a photograph (e.g. smartphone camera) of a document, page or receipt.  For OCR purposes - please see our Deep Learning OCR APIs.
+Perform an emboss operation on the input image
 
 ### Example 
 ```objc
@@ -266,18 +211,22 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
+NSNumber* radius = @56; // Radius in pixels of the emboss operation; a larger radius will produce a greater effect
+NSNumber* sigma = @56; // Sigma, or variance, of the emboss operation
 NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Detect fine text in a photo of a document
-[apiInstance recognizeDetectTextFineWithImageFile:imageFile
-          completionHandler: ^(CMFineTextDetectionResult* output, NSError* error) {
+// Emboss an image
+[apiInstance filterEmbossWithRadius:radius
+              sigma:sigma
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectTextFine: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterEmboss: %@", error);
                         }
                     }];
 ```
@@ -286,11 +235,13 @@ CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **radius** | **NSNumber***| Radius in pixels of the emboss operation; a larger radius will produce a greater effect | 
+ **sigma** | **NSNumber***| Sigma, or variance, of the emboss operation | 
  **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
 
 ### Return type
 
-[**CMFineTextDetectionResult***](CMFineTextDetectionResult.md)
+**NSData***
 
 ### Authorization
 
@@ -299,19 +250,21 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **recognizeDetectTextLarge**
+# **filterGaussianBlur**
 ```objc
--(NSURLSessionTask*) recognizeDetectTextLargeWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMTextDetectionResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) filterGaussianBlurWithRadius: (NSNumber*) radius
+    sigma: (NSNumber*) sigma
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Detect large text in a photo
+Perform a guassian blur on the input image
 
-Identify the position, and size of large text within a photograph.  Identify the location of large text in a photo - such as signs, titles, etc. and other forms of large, low-density text.  Not suitable for high-density text (e.g. scans of documents, receipts, etc.) for OCR purposes - for OCR, please see our Deep Learning OCR APIs.
+Perform a gaussian blur on the input image
 
 ### Example 
 ```objc
@@ -323,18 +276,22 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
+NSNumber* radius = @56; // Radius in pixels of the blur operation; a larger radius will produce a greater blur effect
+NSNumber* sigma = @56; // Sigma, or variance, of the gaussian blur operation
 NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Detect large text in a photo
-[apiInstance recognizeDetectTextLargeWithImageFile:imageFile
-          completionHandler: ^(CMTextDetectionResult* output, NSError* error) {
+// Perform a guassian blur on the input image
+[apiInstance filterGaussianBlurWithRadius:radius
+              sigma:sigma
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectTextLarge: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterGaussianBlur: %@", error);
                         }
                     }];
 ```
@@ -343,11 +300,13 @@ CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **radius** | **NSNumber***| Radius in pixels of the blur operation; a larger radius will produce a greater blur effect | 
+ **sigma** | **NSNumber***| Sigma, or variance, of the gaussian blur operation | 
  **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
 
 ### Return type
 
-[**CMTextDetectionResult***](CMTextDetectionResult.md)
+**NSData***
 
 ### Authorization
 
@@ -356,19 +315,22 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **recognizeDetectVehicleLicensePlates**
+# **filterMotionBlur**
 ```objc
--(NSURLSessionTask*) recognizeDetectVehicleLicensePlatesWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMVehicleLicensePlateDetectionResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) filterMotionBlurWithRadius: (NSNumber*) radius
+    sigma: (NSNumber*) sigma
+    angle: (NSNumber*) angle
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Detect vehicle license plates in an image
+Perform a motion blur on the input image
 
-Identify the position, and size, and content of vehicle license plates in an image.  License plates should be within 15-20 degrees on-axis to the camera.  Supported image formats are JPG, PNG and BMP.
+Perform a motion blur on the input image at a specific angle
 
 ### Example 
 ```objc
@@ -380,18 +342,24 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
+NSNumber* radius = @56; // Radius in pixels of the blur operation; a larger radius will produce a greater blur effect
+NSNumber* sigma = @56; // Sigma, or variance, of the motion blur operation
+NSNumber* angle = @56; // Angle of the motion blur in degrees
 NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Detect vehicle license plates in an image
-[apiInstance recognizeDetectVehicleLicensePlatesWithImageFile:imageFile
-          completionHandler: ^(CMVehicleLicensePlateDetectionResult* output, NSError* error) {
+// Perform a motion blur on the input image
+[apiInstance filterMotionBlurWithRadius:radius
+              sigma:sigma
+              angle:angle
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectVehicleLicensePlates: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterMotionBlur: %@", error);
                         }
                     }];
 ```
@@ -400,11 +368,14 @@ CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **radius** | **NSNumber***| Radius in pixels of the blur operation; a larger radius will produce a greater blur effect | 
+ **sigma** | **NSNumber***| Sigma, or variance, of the motion blur operation | 
+ **angle** | **NSNumber***| Angle of the motion blur in degrees | 
  **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
 
 ### Return type
 
-[**CMVehicleLicensePlateDetectionResult***](CMVehicleLicensePlateDetectionResult.md)
+**NSData***
 
 ### Authorization
 
@@ -413,20 +384,20 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **recognizeFindSymbol**
+# **filterPosterize**
 ```objc
--(NSURLSessionTask*) recognizeFindSymbolWithInputImage: (NSURL*) inputImage
-    targetImage: (NSURL*) targetImage
-        completionHandler: (void (^)(CMFindSymbolResult* output, NSError* error)) handler;
+-(NSURLSessionTask*) filterPosterizeWithLevels: (NSNumber*) levels
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 ```
 
-Find the location of a symbol in an image
+Posterize the image by reducing distinct colors
 
-Determine if an image contains a symbol, and if so, the location of that symbol in the image.
+Reduce the unique number of colors in the image to the specified level
 
 ### Example 
 ```objc
@@ -438,20 +409,20 @@ CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
 
 
-NSURL* inputImage = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to search through for the target image.
-NSURL* targetImage = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image to find in the input image.
+NSNumber* levels = @56; // Number of unique colors to retain in the output image
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
 
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
 
-// Find the location of a symbol in an image
-[apiInstance recognizeFindSymbolWithInputImage:inputImage
-              targetImage:targetImage
-          completionHandler: ^(CMFindSymbolResult* output, NSError* error) {
+// Posterize the image by reducing distinct colors
+[apiInstance filterPosterizeWithLevels:levels
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
                         if (output) {
                             NSLog(@"%@", output);
                         }
                         if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeFindSymbol: %@", error);
+                            NSLog(@"Error calling CMFilterApi->filterPosterize: %@", error);
                         }
                     }];
 ```
@@ -460,12 +431,12 @@ CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **inputImage** | **NSURL***| Image file to search through for the target image. | 
- **targetImage** | **NSURL***| Image to find in the input image. | 
+ **levels** | **NSNumber***| Number of unique colors to retain in the output image | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
 
 ### Return type
 
-[**CMFindSymbolResult***](CMFindSymbolResult.md)
+**NSData***
 
 ### Authorization
 
@@ -474,7 +445,68 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **filterSwirl**
+```objc
+-(NSURLSessionTask*) filterSwirlWithDegrees: (NSNumber*) degrees
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Swirl distort the image
+
+Swirl distort the image by the specified number of degrees
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSNumber* degrees = @56; // Degrees of swirl
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMFilterApi*apiInstance = [[CMFilterApi alloc] init];
+
+// Swirl distort the image
+[apiInstance filterSwirlWithDegrees:degrees
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMFilterApi->filterSwirl: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **degrees** | **NSNumber***| Degrees of swirl | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

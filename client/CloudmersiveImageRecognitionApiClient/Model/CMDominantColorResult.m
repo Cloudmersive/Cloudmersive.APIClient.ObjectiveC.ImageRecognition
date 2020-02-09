@@ -1,6 +1,6 @@
-#import "CMFaceLocateWithLandmarksResponse.h"
+#import "CMDominantColorResult.h"
 
-@implementation CMFaceLocateWithLandmarksResponse
+@implementation CMDominantColorResult
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"faces": @"Faces", @"faceCount": @"FaceCount", @"errorDetails": @"ErrorDetails" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"dominantColors": @"DominantColors" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"successful", @"faces", @"faceCount", @"errorDetails"];
+  NSArray *optionalProperties = @[@"successful", @"dominantColors"];
   return [optionalProperties containsObject:propertyName];
 }
 

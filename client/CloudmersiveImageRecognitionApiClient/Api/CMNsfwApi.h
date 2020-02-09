@@ -23,7 +23,7 @@ extern NSInteger kCMNsfwApiMissingParamErrorCode;
 
 -(instancetype) initWithApiClient:(CMApiClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
-/// Not safe for work (NSFW) racy content classification
+/// Not safe for work NSFW racy content classification
 /// Classify an image into Not Safe For Work (NSFW)/Porn/Racy content and Safe Content.
 ///
 /// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.

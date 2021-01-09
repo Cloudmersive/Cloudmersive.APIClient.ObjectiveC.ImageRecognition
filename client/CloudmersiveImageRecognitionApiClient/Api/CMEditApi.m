@@ -216,6 +216,123 @@ NSInteger kCMEditApiMissingParamErrorCode = 234513;
 }
 
 ///
+/// Composite two images together precisely
+/// Composites two input images together; a layered image onto a base image. Position is based on distance in pixels from each side.  The first image you input is the base image.  The second image (the layered image) will be composited on top of this base image.  Supports PNG transparency.  To control padding you can include transparent pixels at the border(s) of your layered images as appropriate.  Providing multiple parameters in a single axis (for example top and bottom) is not recommended, since only one of the parameters will be used per axis.
+///  @param baseImage Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @param layeredImage Image to layer on top of the base image. 
+///
+///  @param top Optional; Desired distance in pixels from the top of the base image to the top of the layered image. (optional)
+///
+///  @param bottom Optional; Desired distance in pixels from the bottom of the base image to the bottom of the layered image. (optional)
+///
+///  @param left Optional; Desired distance in pixels from the left side of the base image to the left side of the layered image. (optional)
+///
+///  @param right Optional; Desired distance in pixels from the right side of the base image to the right side of the layered image. (optional)
+///
+///  @param width Optional; Desired width of the layered image in pixels. Leave height empty or 0 to automatically scale the image proportionally. (optional)
+///
+///  @param height Optional; Desired height of the layered image in pixels. Leave width empty or 0 to automatically scale the image proportionally. (optional)
+///
+///  @returns NSData*
+///
+-(NSURLSessionTask*) editCompositePreciseWithBaseImage: (NSURL*) baseImage
+    layeredImage: (NSURL*) layeredImage
+    top: (NSNumber*) top
+    bottom: (NSNumber*) bottom
+    left: (NSNumber*) left
+    right: (NSNumber*) right
+    width: (NSNumber*) width
+    height: (NSNumber*) height
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'baseImage' is set
+    if (baseImage == nil) {
+        NSParameterAssert(baseImage);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"baseImage"] };
+            NSError* error = [NSError errorWithDomain:kCMEditApiErrorDomain code:kCMEditApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'layeredImage' is set
+    if (layeredImage == nil) {
+        NSParameterAssert(layeredImage);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"layeredImage"] };
+            NSError* error = [NSError errorWithDomain:kCMEditApiErrorDomain code:kCMEditApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/edit/composite/precise"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    if (top != nil) {
+        headerParams[@"top"] = top;
+    }
+    if (bottom != nil) {
+        headerParams[@"bottom"] = bottom;
+    }
+    if (left != nil) {
+        headerParams[@"left"] = left;
+    }
+    if (right != nil) {
+        headerParams[@"right"] = right;
+    }
+    if (width != nil) {
+        headerParams[@"width"] = width;
+    }
+    if (height != nil) {
+        headerParams[@"height"] = height;
+    }
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"baseImage"] = baseImage;
+    localVarFiles[@"layeredImage"] = layeredImage;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"NSData*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((NSData*)data, error);
+                                }
+                            }];
+}
+
+///
 /// Adaptively adjust the contrast of the image to be more appealing and easy to see
 /// Uses Gamma to adjust the contrast adaptively the way the human eye sees the world.  Results significantly improve the viewability and visual appeal of the image.
 ///  @param gamma Gamma value to adjust the contrast in the image.  Recommended value is 2.0.  Values between 0.0 and 1.0 will reduce contrast, while values above 1.0 will increase contrast. 
@@ -254,6 +371,123 @@ NSInteger kCMEditApiMissingParamErrorCode = 234513;
     NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
     if (gamma != nil) {
         pathParams[@"gamma"] = gamma;
+    }
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary* headerParams = [NSMutableDictionary dictionaryWithDictionary:self.apiClient.configuration.defaultHeaders];
+    [headerParams addEntriesFromDictionary:self.defaultHeaders];
+    // HTTP header `Accept`
+    NSString *acceptHeader = [self.apiClient.sanitizer selectHeaderAccept:@[@"application/octet-stream"]];
+    if(acceptHeader.length > 0) {
+        headerParams[@"Accept"] = acceptHeader;
+    }
+
+    // response content type
+    NSString *responseContentType = [[acceptHeader componentsSeparatedByString:@", "] firstObject] ?: @"";
+
+    // request content type
+    NSString *requestContentType = [self.apiClient.sanitizer selectHeaderContentType:@[@"multipart/form-data"]];
+
+    // Authentication setting
+    NSArray *authSettings = @[@"Apikey"];
+
+    id bodyParam = nil;
+    NSMutableDictionary *formParams = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *localVarFiles = [[NSMutableDictionary alloc] init];
+    localVarFiles[@"imageFile"] = imageFile;
+
+    return [self.apiClient requestWithPath: resourcePath
+                                    method: @"POST"
+                                pathParams: pathParams
+                               queryParams: queryParams
+                                formParams: formParams
+                                     files: localVarFiles
+                                      body: bodyParam
+                              headerParams: headerParams
+                              authSettings: authSettings
+                        requestContentType: requestContentType
+                       responseContentType: responseContentType
+                              responseType: @"NSData*"
+                           completionBlock: ^(id data, NSError *error) {
+                                if(handler) {
+                                    handler((NSData*)data, error);
+                                }
+                            }];
+}
+
+///
+/// Crop an image to an circular area
+/// Crop an image to a target circular area
+///  @param left The left edge of the circular crop area in pixels (X). 
+///
+///  @param top The top edge of the circular crop area in pixels (Y). 
+///
+///  @param radius The radius of the circular crop area in pixels. 
+///
+///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
+///
+///  @returns NSData*
+///
+-(NSURLSessionTask*) editCropCircleWithLeft: (NSNumber*) left
+    top: (NSNumber*) top
+    radius: (NSNumber*) radius
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler {
+    // verify the required parameter 'left' is set
+    if (left == nil) {
+        NSParameterAssert(left);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"left"] };
+            NSError* error = [NSError errorWithDomain:kCMEditApiErrorDomain code:kCMEditApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'top' is set
+    if (top == nil) {
+        NSParameterAssert(top);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"top"] };
+            NSError* error = [NSError errorWithDomain:kCMEditApiErrorDomain code:kCMEditApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'radius' is set
+    if (radius == nil) {
+        NSParameterAssert(radius);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"radius"] };
+            NSError* error = [NSError errorWithDomain:kCMEditApiErrorDomain code:kCMEditApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    // verify the required parameter 'imageFile' is set
+    if (imageFile == nil) {
+        NSParameterAssert(imageFile);
+        if(handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Missing required parameter '%@'", nil),@"imageFile"] };
+            NSError* error = [NSError errorWithDomain:kCMEditApiErrorDomain code:kCMEditApiMissingParamErrorCode userInfo:userInfo];
+            handler(nil, error);
+        }
+        return nil;
+    }
+
+    NSMutableString* resourcePath = [NSMutableString stringWithFormat:@"/image/edit/crop/circle/{left}/{top}/{radius}"];
+
+    NSMutableDictionary *pathParams = [[NSMutableDictionary alloc] init];
+    if (left != nil) {
+        pathParams[@"left"] = left;
+    }
+    if (top != nil) {
+        pathParams[@"top"] = top;
+    }
+    if (radius != nil) {
+        pathParams[@"radius"] = radius;
     }
 
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];

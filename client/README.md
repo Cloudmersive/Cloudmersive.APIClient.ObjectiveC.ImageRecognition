@@ -43,6 +43,7 @@ Import the following:
 // load models
 #import <CloudmersiveImageRecognitionApiClient/CMAgeDetectionResult.h>
 #import <CloudmersiveImageRecognitionApiClient/CMColorResult.h>
+#import <CloudmersiveImageRecognitionApiClient/CMCreateHandwritingRequest.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDetectedLicensePlate.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDetectedObject.h>
 #import <CloudmersiveImageRecognitionApiClient/CMDominantColorResult.h>
@@ -85,6 +86,7 @@ Import the following:
 #import <CloudmersiveImageRecognitionApiClient/CMNsfwApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMRecognizeApi.h>
 #import <CloudmersiveImageRecognitionApiClient/CMResizeApi.h>
+#import <CloudmersiveImageRecognitionApiClient/CMTextGenerationApi.h>
 
 ```
 
@@ -141,7 +143,9 @@ Class | Method | HTTP request | Description
 *CMConvertApi* | [**convertToWebP**](docs/CMConvertApi.md#converttowebp) | **POST** /image/convert/to/webp | Convert input image to WebP format
 *CMEditApi* | [**editAutoOrient**](docs/CMEditApi.md#editautoorient) | **POST** /image/edit/auto-orient/remove-exif | Normalizes image rotation and removes EXIF rotation data
 *CMEditApi* | [**editCompositeBasic**](docs/CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
+*CMEditApi* | [**editCompositePrecise**](docs/CMEditApi.md#editcompositeprecise) | **POST** /image/edit/composite/precise | Composite two images together precisely
 *CMEditApi* | [**editContrastAdaptive**](docs/CMEditApi.md#editcontrastadaptive) | **POST** /image/edit/contrast/{gamma}/adaptive | Adaptively adjust the contrast of the image to be more appealing and easy to see
+*CMEditApi* | [**editCropCircle**](docs/CMEditApi.md#editcropcircle) | **POST** /image/edit/crop/circle/{left}/{top}/{radius} | Crop an image to an circular area
 *CMEditApi* | [**editCropRectangle**](docs/CMEditApi.md#editcroprectangle) | **POST** /image/edit/crop/rectangle/{left}/{top}/{width}/{height} | Crop an image to a rectangular area
 *CMEditApi* | [**editDrawPolygon**](docs/CMEditApi.md#editdrawpolygon) | **POST** /image/edit/draw/polygon | Draw a polygon onto an image
 *CMEditApi* | [**editDrawRectangle**](docs/CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw a rectangle onto an image
@@ -179,12 +183,14 @@ Class | Method | HTTP request | Description
 *CMRecognizeApi* | [**recognizeFindSymbol**](docs/CMRecognizeApi.md#recognizefindsymbol) | **POST** /image/recognize/find/symbol | Find the location of a symbol in an image
 *CMResizeApi* | [**resizePost**](docs/CMResizeApi.md#resizepost) | **POST** /image/resize/preserveAspectRatio/{maxWidth}/{maxHeight} | Resize an image while preserving aspect ratio
 *CMResizeApi* | [**resizeResizeSimple**](docs/CMResizeApi.md#resizeresizesimple) | **POST** /image/resize/target/{width}/{height} | Resize an image
+*CMTextGenerationApi* | [**textGenerationCreateHandwritingPng**](docs/CMTextGenerationApi.md#textgenerationcreatehandwritingpng) | **POST** /image/text/create/handwriting/png | Create an image of handwriting in PNG format
 
 
 ## Documentation For Models
 
  - [CMAgeDetectionResult](docs/CMAgeDetectionResult.md)
  - [CMColorResult](docs/CMColorResult.md)
+ - [CMCreateHandwritingRequest](docs/CMCreateHandwritingRequest.md)
  - [CMDetectedLicensePlate](docs/CMDetectedLicensePlate.md)
  - [CMDetectedObject](docs/CMDetectedObject.md)
  - [CMDominantColorResult](docs/CMDominantColorResult.md)

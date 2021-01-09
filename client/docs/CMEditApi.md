@@ -6,7 +6,9 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**editAutoOrient**](CMEditApi.md#editautoorient) | **POST** /image/edit/auto-orient/remove-exif | Normalizes image rotation and removes EXIF rotation data
 [**editCompositeBasic**](CMEditApi.md#editcompositebasic) | **POST** /image/edit/composite/{location} | Composite two images together
+[**editCompositePrecise**](CMEditApi.md#editcompositeprecise) | **POST** /image/edit/composite/precise | Composite two images together precisely
 [**editContrastAdaptive**](CMEditApi.md#editcontrastadaptive) | **POST** /image/edit/contrast/{gamma}/adaptive | Adaptively adjust the contrast of the image to be more appealing and easy to see
+[**editCropCircle**](CMEditApi.md#editcropcircle) | **POST** /image/edit/crop/circle/{left}/{top}/{radius} | Crop an image to an circular area
 [**editCropRectangle**](CMEditApi.md#editcroprectangle) | **POST** /image/edit/crop/rectangle/{left}/{top}/{width}/{height} | Crop an image to a rectangular area
 [**editDrawPolygon**](CMEditApi.md#editdrawpolygon) | **POST** /image/edit/draw/polygon | Draw a polygon onto an image
 [**editDrawRectangle**](CMEditApi.md#editdrawrectangle) | **POST** /image/edit/draw/rectangle | Draw a rectangle onto an image
@@ -140,6 +142,91 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **editCompositePrecise**
+```objc
+-(NSURLSessionTask*) editCompositePreciseWithBaseImage: (NSURL*) baseImage
+    layeredImage: (NSURL*) layeredImage
+    top: (NSNumber*) top
+    bottom: (NSNumber*) bottom
+    left: (NSNumber*) left
+    right: (NSNumber*) right
+    width: (NSNumber*) width
+    height: (NSNumber*) height
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Composite two images together precisely
+
+Composites two input images together; a layered image onto a base image. Position is based on distance in pixels from each side.  The first image you input is the base image.  The second image (the layered image) will be composited on top of this base image.  Supports PNG transparency.  To control padding you can include transparent pixels at the border(s) of your layered images as appropriate.  Providing multiple parameters in a single axis (for example top and bottom) is not recommended, since only one of the parameters will be used per axis.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* baseImage = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+NSURL* layeredImage = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image to layer on top of the base image.
+NSNumber* top = @56; // Optional; Desired distance in pixels from the top of the base image to the top of the layered image. (optional)
+NSNumber* bottom = @56; // Optional; Desired distance in pixels from the bottom of the base image to the bottom of the layered image. (optional)
+NSNumber* left = @56; // Optional; Desired distance in pixels from the left side of the base image to the left side of the layered image. (optional)
+NSNumber* right = @56; // Optional; Desired distance in pixels from the right side of the base image to the right side of the layered image. (optional)
+NSNumber* width = @56; // Optional; Desired width of the layered image in pixels. Leave height empty or 0 to automatically scale the image proportionally. (optional)
+NSNumber* height = @56; // Optional; Desired height of the layered image in pixels. Leave width empty or 0 to automatically scale the image proportionally. (optional)
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Composite two images together precisely
+[apiInstance editCompositePreciseWithBaseImage:baseImage
+              layeredImage:layeredImage
+              top:top
+              bottom:bottom
+              left:left
+              right:right
+              width:width
+              height:height
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editCompositePrecise: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **baseImage** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+ **layeredImage** | **NSURL***| Image to layer on top of the base image. | 
+ **top** | **NSNumber***| Optional; Desired distance in pixels from the top of the base image to the top of the layered image. | [optional] 
+ **bottom** | **NSNumber***| Optional; Desired distance in pixels from the bottom of the base image to the bottom of the layered image. | [optional] 
+ **left** | **NSNumber***| Optional; Desired distance in pixels from the left side of the base image to the left side of the layered image. | [optional] 
+ **right** | **NSNumber***| Optional; Desired distance in pixels from the right side of the base image to the right side of the layered image. | [optional] 
+ **width** | **NSNumber***| Optional; Desired width of the layered image in pixels. Leave height empty or 0 to automatically scale the image proportionally. | [optional] 
+ **height** | **NSNumber***| Optional; Desired height of the layered image in pixels. Leave width empty or 0 to automatically scale the image proportionally. | [optional] 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **editContrastAdaptive**
 ```objc
 -(NSURLSessionTask*) editContrastAdaptiveWithGamma: (NSNumber*) gamma
@@ -184,6 +271,75 @@ CMEditApi*apiInstance = [[CMEditApi alloc] init];
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **gamma** | **NSNumber***| Gamma value to adjust the contrast in the image.  Recommended value is 2.0.  Values between 0.0 and 1.0 will reduce contrast, while values above 1.0 will increase contrast. | 
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/octet-stream
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **editCropCircle**
+```objc
+-(NSURLSessionTask*) editCropCircleWithLeft: (NSNumber*) left
+    top: (NSNumber*) top
+    radius: (NSNumber*) radius
+    imageFile: (NSURL*) imageFile
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Crop an image to an circular area
+
+Crop an image to a target circular area
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSNumber* left = @56; // The left edge of the circular crop area in pixels (X).
+NSNumber* top = @56; // The top edge of the circular crop area in pixels (Y).
+NSNumber* radius = @56; // The radius of the circular crop area in pixels.
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+
+CMEditApi*apiInstance = [[CMEditApi alloc] init];
+
+// Crop an image to an circular area
+[apiInstance editCropCircleWithLeft:left
+              top:top
+              radius:radius
+              imageFile:imageFile
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMEditApi->editCropCircle: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **left** | **NSNumber***| The left edge of the circular crop area in pixels (X). | 
+ **top** | **NSNumber***| The top edge of the circular crop area in pixels (Y). | 
+ **radius** | **NSNumber***| The radius of the circular crop area in pixels. | 
  **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
 
 ### Return type

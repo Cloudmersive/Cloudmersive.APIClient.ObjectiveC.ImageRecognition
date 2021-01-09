@@ -25,7 +25,7 @@
 /* Text string to draw [optional]
  */
 @property(nonatomic) NSString* text;
-/* Font Family to use.  Leave blank to default to \"Arial\". [optional]
+/* Font Family to use.  Leave blank to default to \"Arial\".  Supported fonts including Arial, Calibri, Cambria, Candara, Consolas, Constantia, Corbel, Courier New, Courier Regular, Georgia, Impact Regular, Lucida, Modern Regular, Tahoma, Times New Roman, Verdana [optional]
  */
 @property(nonatomic) NSString* fontFamilyName;
 /* Font size to use. [optional]

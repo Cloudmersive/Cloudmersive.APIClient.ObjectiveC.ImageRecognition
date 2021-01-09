@@ -53,6 +53,32 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 
 
+/// Composite two images together precisely
+/// Composites two input images together; a layered image onto a base image. Position is based on distance in pixels from each side.  The first image you input is the base image.  The second image (the layered image) will be composited on top of this base image.  Supports PNG transparency.  To control padding you can include transparent pixels at the border(s) of your layered images as appropriate.  Providing multiple parameters in a single axis (for example top and bottom) is not recommended, since only one of the parameters will be used per axis.
+///
+/// @param baseImage Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// @param layeredImage Image to layer on top of the base image.
+/// @param top Optional; Desired distance in pixels from the top of the base image to the top of the layered image. (optional)
+/// @param bottom Optional; Desired distance in pixels from the bottom of the base image to the bottom of the layered image. (optional)
+/// @param left Optional; Desired distance in pixels from the left side of the base image to the left side of the layered image. (optional)
+/// @param right Optional; Desired distance in pixels from the right side of the base image to the right side of the layered image. (optional)
+/// @param width Optional; Desired width of the layered image in pixels. Leave height empty or 0 to automatically scale the image proportionally. (optional)
+/// @param height Optional; Desired height of the layered image in pixels. Leave width empty or 0 to automatically scale the image proportionally. (optional)
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editCompositePreciseWithBaseImage: (NSURL*) baseImage
+    layeredImage: (NSURL*) layeredImage
+    top: (NSNumber*) top
+    bottom: (NSNumber*) bottom
+    left: (NSNumber*) left
+    right: (NSNumber*) right
+    width: (NSNumber*) width
+    height: (NSNumber*) height
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
 /// Adaptively adjust the contrast of the image to be more appealing and easy to see
 /// Uses Gamma to adjust the contrast adaptively the way the human eye sees the world.  Results significantly improve the viewability and visual appeal of the image.
 ///
@@ -63,6 +89,24 @@ extern NSInteger kCMEditApiMissingParamErrorCode;
 ///
 /// @return NSData*
 -(NSURLSessionTask*) editContrastAdaptiveWithGamma: (NSNumber*) gamma
+    imageFile: (NSURL*) imageFile
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Crop an image to an circular area
+/// Crop an image to a target circular area
+///
+/// @param left The left edge of the circular crop area in pixels (X).
+/// @param top The top edge of the circular crop area in pixels (Y).
+/// @param radius The radius of the circular crop area in pixels.
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) editCropCircleWithLeft: (NSNumber*) left
+    top: (NSNumber*) top
+    radius: (NSNumber*) radius
     imageFile: (NSURL*) imageFile
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
 

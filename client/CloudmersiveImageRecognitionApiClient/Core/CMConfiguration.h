@@ -15,7 +15,7 @@
 */
 
 
-static NSString * const kCMAPIVersion = @"1.1.5";
+static NSString * const kCMAPIVersion = @"1.1.6";
 
 @protocol CMConfiguration <NSObject>
 

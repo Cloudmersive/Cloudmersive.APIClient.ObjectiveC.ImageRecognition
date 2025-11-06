@@ -9,11 +9,11 @@
 
 Pod::Spec.new do |s|
     s.name             = "CloudmersiveImageRecognitionApiClient"
-    s.version          = "1.1.6"
+    s.version          = "1.2.0"
 
     s.summary          = "imageapi"
     s.description      = <<-DESC
-                         Image Recognition and Processing APIs let you use Machine Learning to recognize and process images, and also perform useful image modification operations.
+                         Image Recognition and Processing APIs let you use Artificial Intelligence and Machine Learning to recognize and process images, and also perform useful image modification operations.
                          DESC
 
     s.platform     = :ios, '7.0'

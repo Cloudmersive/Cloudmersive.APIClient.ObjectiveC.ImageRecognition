@@ -1,6 +1,6 @@
-#import "CMObjectDetectionResult.h"
+#import "CMImageSimilarityHashResponse.h"
 
-@implementation CMObjectDetectionResult
+@implementation CMImageSimilarityHashResponse
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"objects": @"Objects", @"objectCount": @"ObjectCount" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"imageHash": @"ImageHash" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"successful", @"objects", @"objectCount"];
+  NSArray *optionalProperties = @[@"successful", @"imageHash"];
   return [optionalProperties containsObject:propertyName];
 }
 

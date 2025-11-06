@@ -3,7 +3,7 @@
 
 /**
 * imageapi
-* Image Recognition and Processing APIs let you use Machine Learning to recognize and process images, and also perform useful image modification operations.
+* Image Recognition and Processing APIs let you use Artificial Intelligence and Machine Learning to recognize and process images, and also perform useful image modification operations.
 *
 * OpenAPI spec version: v1
 * 
@@ -28,7 +28,7 @@
 /* True if the operation was successful, false otherwise [optional]
  */
 @property(nonatomic) NSNumber* successful;
-/* People in the image annotated with age information [optional]
+/* People in the image annotated with age and gender information [optional]
  */
 @property(nonatomic) NSArray<CMPersonWithAge>* peopleWithAge;
 /* Number of people identified in the image with an age [optional]

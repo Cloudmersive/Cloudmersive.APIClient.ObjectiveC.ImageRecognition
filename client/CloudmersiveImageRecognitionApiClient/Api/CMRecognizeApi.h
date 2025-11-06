@@ -2,14 +2,16 @@
 #import "CMFindSymbolResult.h"
 #import "CMFineTextDetectionResult.h"
 #import "CMImageDescriptionResponse.h"
-#import "CMObjectDetectionResult.h"
+#import "CMImageSimilarityHashDistanceRequest.h"
+#import "CMImageSimilarityHashDistanceResponse.h"
+#import "CMImageSimilarityHashResponse.h"
 #import "CMTextDetectionResult.h"
 #import "CMVehicleLicensePlateDetectionResult.h"
 #import "CMApi.h"
 
 /**
 * imageapi
-* Image Recognition and Processing APIs let you use Machine Learning to recognize and process images, and also perform useful image modification operations.
+* Image Recognition and Processing APIs let you use Artificial Intelligence and Machine Learning to recognize and process images, and also perform useful image modification operations.
 *
 * OpenAPI spec version: v1
 * 
@@ -52,30 +54,6 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
 -(NSURLSessionTask*) recognizeDetectAndUnskewDocumentWithImageFile: (NSURL*) imageFile
     postProcessingEffect: (NSString*) postProcessingEffect
     completionHandler: (void (^)(NSData* output, NSError* error)) handler;
-
-
-/// Detect objects including types and locations in an image
-/// Identify the position, size and description of objects in an image, along with a recognition confidence level.  Detects both human people and objects in an image.
-///
-/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-/// 
-///  code:200 message:"OK"
-///
-/// @return CMObjectDetectionResult*
--(NSURLSessionTask*) recognizeDetectObjectsWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
-
-
-/// Detect people including locations in an image
-/// Identify the position, and size of human people in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
-///
-/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-/// 
-///  code:200 message:"OK"
-///
-/// @return CMObjectDetectionResult*
--(NSURLSessionTask*) recognizeDetectPeopleWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
 
 
 /// Detect fine text in a photo of a document
@@ -126,6 +104,48 @@ extern NSInteger kCMRecognizeApiMissingParamErrorCode;
 -(NSURLSessionTask*) recognizeFindSymbolWithInputImage: (NSURL*) inputImage
     targetImage: (NSURL*) targetImage
     completionHandler: (void (^)(CMFindSymbolResult* output, NSError* error)) handler;
+
+
+/// Compare two images for similarity
+/// Generates an image similarity score using Deep Learning between 0.0 and 1.0, values closer to 1.0 indicate greater similarity
+///
+/// @param baseImage Image file to compare against.  Common file formats such as PNG, JPEG are supported.
+/// @param comparisonImage Image to compare to the base image.
+/// @param recognitionMode Optional, specify the recognition mode; possible values are Normal, Basic and Advanced.  Default is Normal. (optional)
+/// 
+///  code:200 message:"OK"
+///
+/// @return NSData*
+-(NSURLSessionTask*) recognizeSimilarityCompareWithBaseImage: (NSURL*) baseImage
+    comparisonImage: (NSURL*) comparisonImage
+    recognitionMode: (NSString*) recognitionMode
+    completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+
+
+/// Generate a perceptual image hash
+/// Generates a hash value for the image; hash values that are closer together in terms of Hamming Distance are more similar.
+///
+/// @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+/// @param recognitionMode Optional, specify the recognition mode; possible values are Normal, Basic and Advanced.  Default is Normal. (optional)
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMImageSimilarityHashResponse*
+-(NSURLSessionTask*) recognizeSimilarityHashWithImageFile: (NSURL*) imageFile
+    recognitionMode: (NSString*) recognitionMode
+    completionHandler: (void (^)(CMImageSimilarityHashResponse* output, NSError* error)) handler;
+
+
+/// Calculates the similarity between two perceptual image hashes
+/// Calculates the similarity between two perceptual image hashes by computing the Hamming Distance between them.
+///
+/// @param request 
+/// 
+///  code:200 message:"OK"
+///
+/// @return CMImageSimilarityHashDistanceResponse*
+-(NSURLSessionTask*) recognizeSimilarityHashDistanceWithRequest: (CMImageSimilarityHashDistanceRequest*) request
+    completionHandler: (void (^)(CMImageSimilarityHashDistanceResponse* output, NSError* error)) handler;
 
 
 

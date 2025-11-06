@@ -5,7 +5,6 @@
 #import "CMFaceCompareResponse.h"
 #import "CMFaceLocateResponse.h"
 #import "CMFaceLocateWithLandmarksResponse.h"
-#import "CMGenderDetectionResult.h"
 
 
 @interface CMFaceApi ()
@@ -268,7 +267,7 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 
 ///
 /// Detect the age of people in an image
-/// Identify the age, position, and size of human faces in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
+/// Identify the age, position, and size of human faces in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.  Input image should be a PNG or JPG.  Consumes 20 API calls.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
 ///  @returns CMAgeDetectionResult*
@@ -334,13 +333,13 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
 
 ///
 /// Detect the gender of people in an image
-/// Identify the gender, position, and size of human faces in an image, along with a recognition confidence level.  People in the image should be facing the camera.
+/// Identify the gender, position, and size of human faces in an image, along with a recognition confidence level.  People in the image should be facing the camera.  Input image should be a PNG or JPG.  Consumes 20 API calls.
 ///  @param imageFile Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. 
 ///
-///  @returns CMGenderDetectionResult*
+///  @returns CMAgeDetectionResult*
 ///
 -(NSURLSessionTask*) faceDetectGenderWithImageFile: (NSURL*) imageFile
-    completionHandler: (void (^)(CMGenderDetectionResult* output, NSError* error)) handler {
+    completionHandler: (void (^)(CMAgeDetectionResult* output, NSError* error)) handler {
     // verify the required parameter 'imageFile' is set
     if (imageFile == nil) {
         NSParameterAssert(imageFile);
@@ -390,10 +389,10 @@ NSInteger kCMFaceApiMissingParamErrorCode = 234513;
                               authSettings: authSettings
                         requestContentType: requestContentType
                        responseContentType: responseContentType
-                              responseType: @"CMGenderDetectionResult*"
+                              responseType: @"CMAgeDetectionResult*"
                            completionBlock: ^(id data, NSError *error) {
                                 if(handler) {
-                                    handler((CMGenderDetectionResult*)data, error);
+                                    handler((CMAgeDetectionResult*)data, error);
                                 }
                             }];
 }

@@ -1,6 +1,6 @@
-#import "CMGenderDetectionResult.h"
+#import "CMImageAiDetectionResult.h"
 
-@implementation CMGenderDetectionResult
+@implementation CMImageAiDetectionResult
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"successful": @"Successful", @"personWithGender": @"PersonWithGender", @"peopleIdentified": @"PeopleIdentified" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"cleanResult": @"CleanResult", @"aiGeneratedRiskScore": @"AiGeneratedRiskScore", @"aiSource": @"AiSource" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"successful", @"personWithGender", @"peopleIdentified"];
+  NSArray *optionalProperties = @[@"cleanResult", @"aiGeneratedRiskScore", @"aiSource"];
   return [optionalProperties containsObject:propertyName];
 }
 

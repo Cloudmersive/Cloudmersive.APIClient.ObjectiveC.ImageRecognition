@@ -3,7 +3,7 @@
 
 /**
 * imageapi
-* Image Recognition and Processing APIs let you use Machine Learning to recognize and process images, and also perform useful image modification operations.
+* Image Recognition and Processing APIs let you use Artificial Intelligence and Machine Learning to recognize and process images, and also perform useful image modification operations.
 *
 * OpenAPI spec version: v1
 * 
@@ -34,7 +34,17 @@
 /* The person's age range classification result in years; possible values are \"0-2\", \"4-6\", \"8-13\", \"15-20\", \"25-32\", \"38-43\", \"48-53\", \"60+\" [optional]
  */
 @property(nonatomic) NSString* ageClass;
-
+/* The specific estimated age of the person [optional]
+ */
 @property(nonatomic) NSNumber* age;
+/* Gender estimation classification as Female or Male [optional]
+ */
+@property(nonatomic) NSString* genderClassification;
+/* Confidence level of classification as female; possible values are between 0.0 and 1.0 [optional]
+ */
+@property(nonatomic) NSNumber* genderFemaleConfidence;
+/* Confidence level of classification as male; possible values are between 0.0 and 1.0 [optional]
+ */
+@property(nonatomic) NSNumber* genderMaleConfidence;
 
 @end

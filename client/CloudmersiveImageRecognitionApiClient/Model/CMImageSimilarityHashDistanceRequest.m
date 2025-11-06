@@ -1,6 +1,6 @@
-#import "CMPersonWithGender.h"
+#import "CMImageSimilarityHashDistanceRequest.h"
 
-@implementation CMPersonWithGender
+@implementation CMImageSimilarityHashDistanceRequest
 
 - (instancetype)init {
   self = [super init];
@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"faceLocation": @"FaceLocation", @"genderClassificationConfidence": @"GenderClassificationConfidence", @"genderClass": @"GenderClass" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"imageHash1": @"ImageHash1", @"imageHash2": @"ImageHash2" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"faceLocation", @"genderClassificationConfidence", @"genderClass"];
+  NSArray *optionalProperties = @[@"imageHash1", @"imageHash2"];
   return [optionalProperties containsObject:propertyName];
 }
 

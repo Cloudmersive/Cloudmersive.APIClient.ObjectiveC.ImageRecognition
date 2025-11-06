@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**detectedText** | **NSString*** | Detected text in the image | [optional] 
 **topLeftX** | **NSNumber*** | X coordinate of the top/left text location; 0 represents the left edge of the input image | [optional] 
 **topLeftY** | **NSNumber*** | Y coordinate of the top/left text location; 0 represents the top edge of the input image | [optional] 
 **topRightX** | **NSNumber*** | X coordinate of the top/right text location; 0 represents the left edge of the input image | [optional] 

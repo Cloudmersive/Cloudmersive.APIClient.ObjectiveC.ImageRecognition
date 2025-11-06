@@ -6,12 +6,13 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**recognizeDescribe**](CMRecognizeApi.md#recognizedescribe) | **POST** /image/recognize/describe | Describe an image in natural language
 [**recognizeDetectAndUnskewDocument**](CMRecognizeApi.md#recognizedetectandunskewdocument) | **POST** /image/recognize/detect-document/unskew | Detect and unskew a photo of a document
-[**recognizeDetectObjects**](CMRecognizeApi.md#recognizedetectobjects) | **POST** /image/recognize/detect-objects | Detect objects including types and locations in an image
-[**recognizeDetectPeople**](CMRecognizeApi.md#recognizedetectpeople) | **POST** /image/recognize/detect-people | Detect people including locations in an image
 [**recognizeDetectTextFine**](CMRecognizeApi.md#recognizedetecttextfine) | **POST** /image/recognize/detect-text/fine | Detect fine text in a photo of a document
 [**recognizeDetectTextLarge**](CMRecognizeApi.md#recognizedetecttextlarge) | **POST** /image/recognize/detect-text/large | Detect large text in a photo
 [**recognizeDetectVehicleLicensePlates**](CMRecognizeApi.md#recognizedetectvehiclelicenseplates) | **POST** /image/recognize/detect-vehicle-license-plates | Detect vehicle license plates in an image
 [**recognizeFindSymbol**](CMRecognizeApi.md#recognizefindsymbol) | **POST** /image/recognize/find/symbol | Find the location of a symbol in an image
+[**recognizeSimilarityCompare**](CMRecognizeApi.md#recognizesimilaritycompare) | **POST** /image/recognize/similarity/compare | Compare two images for similarity
+[**recognizeSimilarityHash**](CMRecognizeApi.md#recognizesimilarityhash) | **POST** /image/recognize/similarity/hash | Generate a perceptual image hash
+[**recognizeSimilarityHashDistance**](CMRecognizeApi.md#recognizesimilarityhashdistance) | **POST** /image/recognize/similarity/hash/distance | Calculates the similarity between two perceptual image hashes
 
 
 # **recognizeDescribe**
@@ -120,120 +121,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 **NSData***
-
-### Authorization
-
-[Apikey](../README.md#Apikey)
-
-### HTTP request headers
-
- - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **recognizeDetectObjects**
-```objc
--(NSURLSessionTask*) recognizeDetectObjectsWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
-```
-
-Detect objects including types and locations in an image
-
-Identify the position, size and description of objects in an image, along with a recognition confidence level.  Detects both human people and objects in an image.
-
-### Example 
-```objc
-CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
-
-// Configure API key authorization: (authentication scheme: Apikey)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
-
-
-NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
-
-// Detect objects including types and locations in an image
-[apiInstance recognizeDetectObjectsWithImageFile:imageFile
-          completionHandler: ^(CMObjectDetectionResult* output, NSError* error) {
-                        if (output) {
-                            NSLog(@"%@", output);
-                        }
-                        if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectObjects: %@", error);
-                        }
-                    }];
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
-
-### Return type
-
-[**CMObjectDetectionResult***](CMObjectDetectionResult.md)
-
-### Authorization
-
-[Apikey](../README.md#Apikey)
-
-### HTTP request headers
-
- - **Content-Type**: multipart/form-data
- - **Accept**: application/json, text/json, application/xml, text/xml
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **recognizeDetectPeople**
-```objc
--(NSURLSessionTask*) recognizeDetectPeopleWithImageFile: (NSURL*) imageFile
-        completionHandler: (void (^)(CMObjectDetectionResult* output, NSError* error)) handler;
-```
-
-Detect people including locations in an image
-
-Identify the position, and size of human people in an image, along with a recognition confidence level.  People in the image do NOT need to be facing the camera; they can be facing away, edge-on, etc.
-
-### Example 
-```objc
-CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
-
-// Configure API key authorization: (authentication scheme: Apikey)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
-
-
-NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-
-CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
-
-// Detect people including locations in an image
-[apiInstance recognizeDetectPeopleWithImageFile:imageFile
-          completionHandler: ^(CMObjectDetectionResult* output, NSError* error) {
-                        if (output) {
-                            NSLog(@"%@", output);
-                        }
-                        if (error) {
-                            NSLog(@"Error calling CMRecognizeApi->recognizeDetectPeople: %@", error);
-                        }
-                    }];
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
-
-### Return type
-
-[**CMObjectDetectionResult***](CMObjectDetectionResult.md)
 
 ### Authorization
 
@@ -474,6 +361,189 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
+ - **Accept**: application/json, text/json, application/xml, text/xml
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **recognizeSimilarityCompare**
+```objc
+-(NSURLSessionTask*) recognizeSimilarityCompareWithBaseImage: (NSURL*) baseImage
+    comparisonImage: (NSURL*) comparisonImage
+    recognitionMode: (NSString*) recognitionMode
+        completionHandler: (void (^)(NSData* output, NSError* error)) handler;
+```
+
+Compare two images for similarity
+
+Generates an image similarity score using Deep Learning between 0.0 and 1.0, values closer to 1.0 indicate greater similarity
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* baseImage = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to compare against.  Common file formats such as PNG, JPEG are supported.
+NSURL* comparisonImage = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image to compare to the base image.
+NSString* recognitionMode = @"recognitionMode_example"; // Optional, specify the recognition mode; possible values are Normal, Basic and Advanced.  Default is Normal. (optional)
+
+CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+
+// Compare two images for similarity
+[apiInstance recognizeSimilarityCompareWithBaseImage:baseImage
+              comparisonImage:comparisonImage
+              recognitionMode:recognitionMode
+          completionHandler: ^(NSData* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMRecognizeApi->recognizeSimilarityCompare: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **baseImage** | **NSURL***| Image file to compare against.  Common file formats such as PNG, JPEG are supported. | 
+ **comparisonImage** | **NSURL***| Image to compare to the base image. | 
+ **recognitionMode** | **NSString***| Optional, specify the recognition mode; possible values are Normal, Basic and Advanced.  Default is Normal. | [optional] 
+
+### Return type
+
+**NSData***
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json, text/json, application/xml, text/xml
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **recognizeSimilarityHash**
+```objc
+-(NSURLSessionTask*) recognizeSimilarityHashWithImageFile: (NSURL*) imageFile
+    recognitionMode: (NSString*) recognitionMode
+        completionHandler: (void (^)(CMImageSimilarityHashResponse* output, NSError* error)) handler;
+```
+
+Generate a perceptual image hash
+
+Generates a hash value for the image; hash values that are closer together in terms of Hamming Distance are more similar.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+NSURL* imageFile = [NSURL fileURLWithPath:@"/path/to/file.txt"]; // Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
+NSString* recognitionMode = @"recognitionMode_example"; // Optional, specify the recognition mode; possible values are Normal, Basic and Advanced.  Default is Normal. (optional)
+
+CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+
+// Generate a perceptual image hash
+[apiInstance recognizeSimilarityHashWithImageFile:imageFile
+              recognitionMode:recognitionMode
+          completionHandler: ^(CMImageSimilarityHashResponse* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMRecognizeApi->recognizeSimilarityHash: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **imageFile** | **NSURL***| Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported. | 
+ **recognitionMode** | **NSString***| Optional, specify the recognition mode; possible values are Normal, Basic and Advanced.  Default is Normal. | [optional] 
+
+### Return type
+
+[**CMImageSimilarityHashResponse***](CMImageSimilarityHashResponse.md)
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json, text/json, application/xml, text/xml
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **recognizeSimilarityHashDistance**
+```objc
+-(NSURLSessionTask*) recognizeSimilarityHashDistanceWithRequest: (CMImageSimilarityHashDistanceRequest*) request
+        completionHandler: (void (^)(CMImageSimilarityHashDistanceResponse* output, NSError* error)) handler;
+```
+
+Calculates the similarity between two perceptual image hashes
+
+Calculates the similarity between two perceptual image hashes by computing the Hamming Distance between them.
+
+### Example 
+```objc
+CMDefaultConfiguration *apiConfig = [CMDefaultConfiguration sharedConfig];
+
+// Configure API key authorization: (authentication scheme: Apikey)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Apikey"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Apikey"];
+
+
+CMImageSimilarityHashDistanceRequest* request = [[CMImageSimilarityHashDistanceRequest alloc] init]; // 
+
+CMRecognizeApi*apiInstance = [[CMRecognizeApi alloc] init];
+
+// Calculates the similarity between two perceptual image hashes
+[apiInstance recognizeSimilarityHashDistanceWithRequest:request
+          completionHandler: ^(CMImageSimilarityHashDistanceResponse* output, NSError* error) {
+                        if (output) {
+                            NSLog(@"%@", output);
+                        }
+                        if (error) {
+                            NSLog(@"Error calling CMRecognizeApi->recognizeSimilarityHashDistance: %@", error);
+                        }
+                    }];
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **request** | [**CMImageSimilarityHashDistanceRequest***](CMImageSimilarityHashDistanceRequest.md)|  | 
+
+### Return type
+
+[**CMImageSimilarityHashDistanceResponse***](CMImageSimilarityHashDistanceResponse.md)
+
+### Authorization
+
+[Apikey](../README.md#Apikey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded
  - **Accept**: application/json, text/json, application/xml, text/xml
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

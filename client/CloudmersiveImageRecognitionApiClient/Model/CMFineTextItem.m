@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"topLeftX": @"TopLeftX", @"topLeftY": @"TopLeftY", @"topRightX": @"TopRightX", @"topRightY": @"TopRightY", @"bottomLeftX": @"BottomLeftX", @"bottomLeftY": @"BottomLeftY", @"bottomRightX": @"BottomRightX", @"bottomRightY": @"BottomRightY", @"width": @"Width", @"height": @"Height", @"angle": @"Angle" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"detectedText": @"DetectedText", @"topLeftX": @"TopLeftX", @"topLeftY": @"TopLeftY", @"topRightX": @"TopRightX", @"topRightY": @"TopRightY", @"bottomLeftX": @"BottomLeftX", @"bottomLeftY": @"BottomLeftY", @"bottomRightX": @"BottomRightX", @"bottomRightY": @"BottomRightY", @"width": @"Width", @"height": @"Height", @"angle": @"Angle" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"topLeftX", @"topLeftY", @"topRightX", @"topRightY", @"bottomLeftX", @"bottomLeftY", @"bottomRightX", @"bottomRightY", @"width", @"height", @"angle"];
+  NSArray *optionalProperties = @[@"detectedText", @"topLeftX", @"topLeftY", @"topRightX", @"topRightY", @"bottomLeftX", @"bottomLeftY", @"bottomRightX", @"bottomRightY", @"width", @"height", @"angle"];
   return [optionalProperties containsObject:propertyName];
 }
 

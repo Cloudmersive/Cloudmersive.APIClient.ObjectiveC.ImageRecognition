@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"faceLocation": @"FaceLocation", @"ageClassificationConfidence": @"AgeClassificationConfidence", @"ageClass": @"AgeClass", @"age": @"Age" }];
+  return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"faceLocation": @"FaceLocation", @"ageClassificationConfidence": @"AgeClassificationConfidence", @"ageClass": @"AgeClass", @"age": @"Age", @"genderClassification": @"GenderClassification", @"genderFemaleConfidence": @"GenderFemaleConfidence", @"genderMaleConfidence": @"GenderMaleConfidence" }];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"faceLocation", @"ageClassificationConfidence", @"ageClass", @"age"];
+  NSArray *optionalProperties = @[@"faceLocation", @"ageClassificationConfidence", @"ageClass", @"age", @"genderClassification", @"genderFemaleConfidence", @"genderMaleConfidence"];
   return [optionalProperties containsObject:propertyName];
 }
 
